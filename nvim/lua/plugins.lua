@@ -159,5 +159,9 @@ require("lazy").setup({
         config = function()
             require("config.preview")
         end
+    },
+    {
+        'Exafunction/codeium.vim',
+        event = 'BufEnter'
     }
 })
