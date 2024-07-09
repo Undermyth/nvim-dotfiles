@@ -140,10 +140,24 @@ require("lazy").setup({
             require("config.lspsignature")
         end
     },
+    -- {
+    --     "ojroques/nvim-lspfuzzy",
+    --     config = function()
+    --         require("config/lspfuzzy")
+    --     end
+    -- },
     {
-        "ojroques/nvim-lspfuzzy",
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
         config = function()
-            require("config/lspfuzzy")
+            require("config.treesitter")
+        end
+    },
+    {
+        "rmagatti/goto-preview",
+        event = "BufEnter",
+        config = function()
+            require("config.preview")
         end
     }
 })
