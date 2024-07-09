@@ -4,10 +4,8 @@ if not status then
 	return
 end
 
-vim.keymap.set('n', '<leader>t', "<cmd>ToggleTerm<CR>")
-
 toggleterm.setup({
-    -- open_mapping = [[<leader>t]],
+    open_mapping = [[<leader>t]],
     start_in_insert = true,
     direction = 'horizontal'
 })
