@@ -1,5 +1,7 @@
 # nvim-dotfiles
-my configuration for neovim
+我的 nvim 配置 / my configuration for neovim
+仅限资源受限（尤其是内存受限）的远程机器上编辑代码使用。浏览代码仍然以 vscode 优先（
+## 映射表
 | 映射 Keymap | 功能 Function | 相关插件 Plugins |
 | --- | --- | --- |
 | ctrl + p | 文件名查找 | telescope |
@@ -18,3 +20,9 @@ my configuration for neovim
 | space + d | 显示/隐藏文件树 | nvim-tree |
 | gd / gi / gr | 跳转到定义/实现/引用（def/impl/ref）| 原生 |
 | spcae + gd / gi / gr | 跳转预览 | preview |
+| 鼠标拖拉 ｜ 调整窗口大小 ｜ 原生 |
+| y | 复制（光标选中） | 原生 |
+| p | 粘贴（光标选中） | 原生 |
+## LSP 的使用
+使用 `:Mason` 查找并使用 `i` 键安装对应语言的 LSP。
+然后在 `lsp.lua`中照猫画虎即可。注意，`eusure_installed`中的名字对应的是`:Mason`中右侧的淡色标签。
