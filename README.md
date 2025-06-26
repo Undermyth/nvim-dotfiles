@@ -31,8 +31,12 @@
 
 ## LSP 的使用
 使用 `:Mason` 查找并使用 `i` 键安装对应语言的 LSP。
+
 然后在 `lsp.lua`中照猫画虎即可。注意，`eusure_installed`中的名字对应的是`:Mason`中右侧的淡色标签。
+
 Mason 是 LSP 的包管理系统，lspconfig 是 LSP 向 neovim 的接口系统。mason-lspconfig 是两者的桥梁，负责将 Mason 安装的 LSP 提供给 lspconfig 进行发现。
+
+treesitter 完成的是 AST 的解析，提供语言相关的语法高亮和格式化。nvim-cmp 从 LSP 获得信息进行补全提示。
 ## 配置位置与结构
 在`~/.config/nvim`下，看`install.sh`即可。内容模块化，应该也是比较清晰的。插件由 LazyVim 自动管理，一般情况下无需关心。使用`:Lazyvim`查看插件的管理状态或者更新插件。
 ## LLM 配置
