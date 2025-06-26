@@ -26,3 +26,8 @@
 ## LSP 的使用
 使用 `:Mason` 查找并使用 `i` 键安装对应语言的 LSP。
 然后在 `lsp.lua`中照猫画虎即可。注意，`eusure_installed`中的名字对应的是`:Mason`中右侧的淡色标签。
+## 配置位置与结构
+在`~/.config/nvim`下。
+## 其他
+主题可以通过`:Telescope colorscheme`进行选择。但是想要永久生效，必须通过`colorscheme.lua`进行配置。
+
