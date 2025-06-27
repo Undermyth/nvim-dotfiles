@@ -27,8 +27,41 @@ require("lazy").setup({
         name = "catppuccin", 
         priority = 1000,
         opts = {
-            flavour = "latte",
-            transparent_background = true
+            flavour = "mocha",
+            transparent_background = true,
+            term_colors = true,
+            styles = {
+				comments = {},
+				conditionals = {},
+				loops = {},
+				functions = {},
+				keywords = {},
+				strings = {},
+				variables = {},
+				numbers = {},
+				booleans = {},
+				properties = {},
+				types = {},
+                modules = {},
+                module = {}
+			},
+            color_overrides = {
+				mocha = {
+					base = "#000000",
+					mantle = "#000000",
+					crust = "#000000",
+				},
+			},
+			integrations = {
+				telescope = {
+					enabled = true,
+					style = "nvchad",
+				},
+				dropbar = {
+					enabled = true,
+					color_mode = true,
+				},
+			},
         }
     },
     -- Vscode-like pictograms
@@ -160,11 +193,67 @@ require("lazy").setup({
             require("config.preview")
         end
     },
+    -- AI completion
+    -- {
+    --     'Exafunction/codeium.vim',
+    --     event = 'BufEnter',
+    --     config = function()
+    --         vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
+    --     end
+    -- }
     {
-        'Exafunction/codeium.vim',
+        'Exafunction/windsurf.vim',
         event = 'BufEnter',
-        config = function()
-            vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
-        end
+    },
+    {
+        "olimorris/codecompanion.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
+        opts = {
+            adapters = {
+                openrouter = function() 
+                    return require("codecompanion.adapters").extend("openai_compatible", {
+                        env = {
+                            url = "https://openrouter.ai/api",
+                            api_key = "OPENROUTER_API_KEY",
+                            chat_url = "/v1/chat/completions",
+                        },
+                        schema = {
+                            model = {
+                                default = "google/gemini-2.5-flash-preview-05-20"
+                            }
+                        }
+                    })
+				end
+            },
+            strategies = {
+                chat = {
+                    adapter = "openrouter",
+                    keymaps = {
+                        send = {
+                           modes = { n = "<C-s>", i = "<C-s>" } 
+                        }
+                    }
+                },
+                inline = {
+                    adapter = "openrouter",
+                    keymaps = {
+                        accept_change = {
+                            modes = { n = "<leader>ga" },
+                            description = "Accept the suggested change",
+                        },
+                        reject_change = {
+                            modes = { n = "<leader>gr" },
+                            description = "Reject the suggested change",
+                        }
+                    }
+                },
+                cmd = {
+                    adapter = "openrouter"
+                }
+            }
+        }
     }
 })
