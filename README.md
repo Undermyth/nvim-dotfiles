@@ -27,6 +27,7 @@
 | ctrl + d | 向后缩进（i 模式） | 原生 |
 | (n+)> | 向前缩进（n 次）（v 模式） | 原生 |
 | (n+)< | 向后缩进（n 次）（v 模式） | 原生 |
+| space + o | 触发代码大纲 | outline |
 | space + ga | 接受行内编辑 | codecompanion |
 | space + gr | 拒绝行内编辑 | codecompanion |
 | :CodeCompanionChat | 启动 LLM 会话 | codecompanion | 
@@ -43,6 +44,8 @@ Mason 是 LSP 的包管理系统，lspconfig 是 LSP 向 neovim 的接口系统�
 treesitter 完成的是 AST 的解析，提供语言相关的语法高亮和格式化。nvim-cmp 从 LSP 获得信息进行补全提示。
 ## 配置位置与结构
 在`~/.config/nvim`下，看`install.sh`即可。内容模块化，应该也是比较清晰的。插件由 LazyVim 自动管理，一般情况下无需关心。使用`:Lazyvim`查看插件的管理状态或者更新插件。
+
+ripgrep 依赖需要额外安装。telescope 的全局搜索需要。
 ## LLM 配置
 由 codecompanion 和 windsurf 共同完成，后者负责行内补全，前者负责行内编辑和对话。前者接的是 openrouter，转接 gemini-2.5-flash。对话与编辑均是。key 通过环境变量保管。
 ## 其他
