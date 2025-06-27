@@ -18,16 +18,18 @@
 | space + t | 打开内置终端 | toggleterm |
 | ctrl + \ | 打开/隐藏内置终端 | toggleterm |
 | space + d | 显示/隐藏文件树 | nvim-tree |
+| a, d, r | 创建（append）/删除（delete）/重命名（rename）文件 | nvim-tree |
 | gd / gi / gr | 跳转到定义/实现/引用（def/impl/ref）| 原生 |
 | spcae + gd / gi / gr | 跳转预览 | preview |
+| ctrl + o / i | 跳转到上一次/下一次光标所在位置（old/into） | 原生 |
 | 鼠标拖拉 | 调整窗口大小 | 原生 |
-| y | 复制（光标选中） | 原生 |
-| p | 粘贴（光标选中） | 原生 |
+| y / ctrl + y| 复制（光标选中），同时复制到系统剪贴板 | 原生 |
+| p | 粘贴（光标选中） ，可从系统剪贴板粘贴 | 原生 |
 | ctrl + t | 向前缩进（i 模式） | 原生 |
 | ctrl + d | 向后缩进（i 模式） | 原生 |
 | (n+)> | 向前缩进（n 次）（v 模式） | 原生 |
 | (n+)< | 向后缩进（n 次）（v 模式） | 原生 |
-| space + o | 触发代码大纲 | outline |
+| space + o | 触发代码大纲 | aerial |
 | space + ga | 接受行内编辑 | codecompanion |
 | space + gr | 拒绝行内编辑 | codecompanion |
 | :CodeCompanionChat | 启动 LLM 会话 | codecompanion | 
