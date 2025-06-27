@@ -5,11 +5,11 @@
 | 映射 Keymap | 功能 Function | 相关插件 Plugins |
 | --- | --- | --- |
 | ctrl + p | 文件名查找 | telescope |
-| space + ff | 全局文本查找 | telescope |
+| space + f | 全局文本查找 | telescope |
 | shift + tab | 窗口轮换（i/n模式均可） | 原生 |
-| option + left / right | 向左/向右以词为单位移动（i/n模式均可） | 原生 |
+| shift + left / right | 向左/向右以词为单位移动（i/n模式均可） | 原生 |
 | option + up / down | 移动到最上/最下（i模式） | 原生 |
-| option + backspace | 以词为单位删除（i模式） | 原生 |
+| shift + backspace | 以词为单位删除（i模式） | 原生 |
 | ctrl + h / j / k / l | 上下左右移动光标（i模式） | 原生 |
 | ctrl + h / l | 向左/向右轮换 buffer | barbar |
 | space + w | 关闭 buffer | barbar |
@@ -41,8 +41,12 @@
 Mason 是 LSP 的包管理系统，lspconfig 是 LSP 向 neovim 的接口系统。mason-lspconfig 是两者的桥梁，负责将 Mason 安装的 LSP 提供给 lspconfig 进行发现。
 
 treesitter 完成的是 AST 的解析，提供语言相关的语法高亮和格式化。nvim-cmp 从 LSP 获得信息进行补全提示。
+
+针对 python 配置，使用 pylsp 作为 LSP 来源，pyflake 作为诊断来源。其他诊断不建议开启，因为都比较严格。pylsp 所在的环境是 mason 自带的虚拟环境，lsp 会自动检测终端中的 python 环境。
 ## 配置位置与结构
 在`~/.config/nvim`下，看`install.sh`即可。内容模块化，应该也是比较清晰的。插件由 LazyVim 自动管理，一般情况下无需关心。使用`:Lazyvim`查看插件的管理状态或者更新插件。
+## 终端配置
+使用 Tabby 终端 tokyonight 主题配合。tabby 配置文件见于`tabby.yaml`。需要额外安装背景插件。
 ## LLM 配置
 由 codecompanion 和 windsurf 共同完成，后者负责行内补全，前者负责行内编辑和对话。前者接的是 openrouter，转接 gemini-2.5-flash。对话与编辑均是。key 通过环境变量保管。
 ## 其他
