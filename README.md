@@ -23,6 +23,10 @@
 | 鼠标拖拉 | 调整窗口大小 | 原生 |
 | y | 复制（光标选中） | 原生 |
 | p | 粘贴（光标选中） | 原生 |
+| ctrl + t | 向前缩进（i 模式） | 原生 |
+| ctrl + d | 向后缩进（i 模式） | 原生 |
+| (n+)> | 向前缩进（n 次）（v 模式） | 原生 |
+| (n+)< | 向后缩进（n 次）（v 模式） | 原生 |
 | space + ga | 接受行内编辑 | codecompanion |
 | space + gr | 拒绝行内编辑 | codecompanion |
 | :CodeCompanionChat | 启动 LLM 会话 | codecompanion | 
