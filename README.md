@@ -33,7 +33,9 @@
 | (n+)< | 向后缩进（n 次）（v 模式） | 原生 |
 | space + o | 触发代码大纲 | aerial |
 | space + e | 打开诊断汇总窗口 | blink-cmp |
-
+| ]d | 跳转到下一个诊断 | blink-cmp |
+| [d | 跳转到上一个诊断 | blink-cmp |
+| ctrl + e | 取消补全提示 | blink-cmp |
 | space + ga | 接受行内编辑 | codecompanion |
 | space + gr | 拒绝行内编辑 | codecompanion |
 | :CodeCompanionChat | 启动 LLM 会话 | codecompanion | 

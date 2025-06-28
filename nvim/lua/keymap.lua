@@ -31,4 +31,4 @@ vim.keymap.set('n', '<M-Down>', ":resize -2<CR>")
 vim.keymap.set('n', '<M-Left>', ":vetical resize -2<CR>")
 vim.keymap.set('n', '<M-Right>', ":vertical resize +2<CR>")
 vim.keymap.set('v', '<C-y>', "\"+y")
-
+vim.keymap.set('v', 'x', '"_x')
