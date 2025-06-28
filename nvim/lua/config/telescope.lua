@@ -13,6 +13,11 @@ vim.keymap.set("n", "<leader>f", "<Esc>:Telescope live_grep<CR>")
 vim.keymap.set("n", "<leader>s", ":Telescope aerial<CR>")
 
 telescope.setup({
+    pickers = {
+        find_files = {
+            no_ignore = true,
+        }
+    },
     extensions = {
         aerial = {
               -- Set the width of the first two columns (the second

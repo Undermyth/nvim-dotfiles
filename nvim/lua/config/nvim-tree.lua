@@ -13,6 +13,9 @@ nvim_tree.setup({
 		enable = true,
 	},
 	-- 过滤文件
+    filters = {
+        enable = false,
+    },
     view = {
 	    -- 文件浏览器展示位置，左侧：left, 右侧：right
 	    side = "left",
