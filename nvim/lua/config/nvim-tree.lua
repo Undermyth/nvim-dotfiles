@@ -12,6 +12,9 @@ nvim_tree.setup({
     git = {
 		enable = true,
 	},
+    filters = {
+        enable = false,
+    },
 	-- 过滤文件
     view = {
 	    -- 文件浏览器展示位置，左侧：left, 右侧：right

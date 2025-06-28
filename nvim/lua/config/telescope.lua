@@ -28,6 +28,11 @@ vim.keymap.set('n', '<Tab>', function()
 end, { noremap = true, silent = true, desc = "Switch Buffers (MRU)" })
 
 telescope.setup({
+    pickers = {
+        find_files = {
+            no_ignore = true
+        }
+    },
     extensions = {
         aerial = {
               -- Set the width of the first two columns (the second
