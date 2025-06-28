@@ -6,6 +6,7 @@
 | --- | --- | --- |
 | ctrl + p | 文件名查找 | telescope |
 | space + f | 全局文本查找 | telescope |
+| space + s | 单文件符号查找（symbol） | telescope + aerial |
 | shift + tab | 窗口轮换（i/n模式均可） | 原生 |
 | shift + left / right | 向左/向右以词为单位移动（i/n模式均可） | 原生 |
 | option + up / down | 移动到最上/最下（i模式） | 原生 |
