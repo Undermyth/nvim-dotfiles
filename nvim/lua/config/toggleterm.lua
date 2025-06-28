@@ -9,5 +9,9 @@ vim.keymap.set('n', '<leader>t', "<cmd>ToggleTerm<CR>")
 toggleterm.setup({
     open_mapping = [[<C-\>]],
     start_in_insert = true,
-    direction = 'horizontal'
+    direction = 'float',
+    float_opts = {
+        border = "curved",
+        title_pos = "center",
+    },
 })
