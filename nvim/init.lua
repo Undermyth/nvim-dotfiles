@@ -1,8 +1,8 @@
--- simple vim options
-require('options')
-
 -- key mapping setup
 require('keymap')
+
+-- simple vim options
+require('options')
 
 -- load diagnostic configuration. will be used by LSP
 require('diagnostic')

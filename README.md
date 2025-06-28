@@ -7,7 +7,8 @@
 | ctrl + p | 文件名查找 | telescope |
 | space + f | 全局文本查找 | telescope |
 | space + s | 单文件符号查找（symbol） | telescope + aerial |
-| shift + tab | 窗口轮换（i/n模式均可） | 原生 |
+| tab | 最近窗口轮换 | telescope |
+| space + tab | 窗口轮换（i/n模式均可） | 原生 |
 | shift + left / right | 向左/向右以词为单位移动（i/n模式均可） | 原生 |
 | option + up / down | 移动到最上/最下（i模式） | 原生 |
 | shift + backspace | 以词为单位删除（i模式） | 原生 |
@@ -31,6 +32,8 @@
 | (n+)> | 向前缩进（n 次）（v 模式） | 原生 |
 | (n+)< | 向后缩进（n 次）（v 模式） | 原生 |
 | space + o | 触发代码大纲 | aerial |
+| space + e | 打开诊断汇总窗口 | blink-cmp |
+
 | space + ga | 接受行内编辑 | codecompanion |
 | space + gr | 拒绝行内编辑 | codecompanion |
 | :CodeCompanionChat | 启动 LLM 会话 | codecompanion | 

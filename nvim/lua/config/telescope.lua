@@ -3,6 +3,8 @@ if not status then
 	vim.notify("telescope not found")
 	return
 end
+local action_state = require('telescope.actions.state')
+local actions = require('telescope.actions')
 
 -- 查找文件
 vim.keymap.set("n", "<C-p>", ":Telescope find_files<CR>")
@@ -12,12 +14,20 @@ vim.keymap.set("n", "<leader>f", "<Esc>:Telescope live_grep<CR>")
 -- vim.keymap.set("i", "<C-f>", "<Esc>:Telescope live_grep<CR>"))
 vim.keymap.set("n", "<leader>s", ":Telescope aerial<CR>")
 
+-- 将 Ctrl-Tab 映射到 Telescope 的 buffer 列表
+-- `sort_mru = true` 是默认值，所以通常不用显式写出
+vim.keymap.set('n', '<Tab>', function()
+    require('telescope.builtin').buffers({
+        sort_mru = true,
+        ignore_current_buffer = false,
+        attach_mappings = function(prompt_bufnr, map)
+            map('n', 'd', function() actions.delete_buffer(prompt_bufnr) end)
+            return true
+        end
+    })
+end, { noremap = true, silent = true, desc = "Switch Buffers (MRU)" })
+
 telescope.setup({
-    pickers = {
-        find_files = {
-            no_ignore = true,
-        }
-    },
     extensions = {
         aerial = {
               -- Set the width of the first two columns (the second
@@ -37,6 +47,5 @@ telescope.setup({
         },
     },
 })
-
 
 telescope.load_extension("aerial")

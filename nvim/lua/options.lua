@@ -30,3 +30,46 @@ vim.opt.smartcase = true -- but make it case sensitive if an uppercase is entere
 -- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
+
+-- [[ 自动高亮光标下的单词 (无副作用) ]]
+
+-- 1. 创建一个 augroup (自动命令组)，方便管理
+local auto_highlight_group = vim.api.nvim_create_augroup("AutoHighlight", { clear = true })
+
+-- 2. 设置触发 CursorHold 事件的延迟时间
+vim.opt.updatetime = 300
+
+-- 3. 定义当光标移动或离开时清除高亮的功能
+local function clear_document_highlights()
+    -- 如果 document highlight 的窗口存在，就关闭它
+    -- 这是最可靠的清除方法
+    pcall(vim.lsp.buf.clear_references)
+end
+
+-- 4. 当光标移动时，立即清除旧的高亮
+vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+    group = auto_highlight_group,
+    callback = function()
+        clear_document_highlights()
+    end,
+})
+
+-- 5. 当光标停留时，在 normal 模式下触发新的高亮
+vim.api.nvim_create_autocmd({ "CursorHold" }, {
+    group = auto_highlight_group,
+    callback = function()
+        -- 只在 normal 模式下并且没有选区时执行
+        if vim.fn.mode() == "n" and vim.fn.visualmode() == "" then
+            -- 调用内置的文档高亮功能
+            -- 它会自动处理光标下是否有单词等情况
+            vim.lsp.buf.document_highlight()
+        end
+    end,
+})
+
+-- (可选) 增加一个手动清除的快捷键，例如按 ESC 清除
+vim.keymap.set('n', '<Esc>', function()
+    clear_document_highlights()
+    -- 同时清除标准搜索高亮 (如果你想的话)
+    -- vim.cmd('nohlsearch')
+end, { silent = true, desc = "Clear document highlights" })
