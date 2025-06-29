@@ -27,7 +27,7 @@ return {
 		-- See :h blink-cmp-config-keymap for defining your own keymap
 		keymap = {
 			-- Each keymap may be a list of commands and/or functions
-			preset = "super-tab",
+			preset = "enter",
 			-- Select completions
 			["<Up>"] = { "select_prev", "fallback" },
 			["<Down>"] = { "select_next", "fallback" },
@@ -80,7 +80,13 @@ return {
 		},
 
 		-- Signature help when tying
-		signature = { enabled = true },
+		signature = {
+            enabled = true,
+            window = {
+                border = "rounded",
+                show_documentation = true
+            }
+        },
 	},
 	opts_extend = { "sources.default" },
 }
