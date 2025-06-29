@@ -31,6 +31,9 @@ vim.opt.smartcase = true -- but make it case sensitive if an uppercase is entere
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+vim.g.clipboard = 'osc52'
+vim.o.winborder = "rounded"
+
 -- [[ 自动高亮光标下的单词 (无副作用) ]]
 
 -- 1. 创建一个 augroup (自动命令组)，方便管理
