@@ -32,7 +32,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 vim.g.clipboard = 'osc52'
-vim.o.winborder = "rounded"
+-- vim.o.winborder = "rounded"
 
 -- [[ 自动高亮光标下的单词 (无副作用) ]]
 

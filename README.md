@@ -9,6 +9,8 @@
 | space + s | 单文件符号查找（symbol） | telescope + aerial |
 | tab | 最近窗口轮换 | telescope |
 | space + tab | 窗口轮换（i/n模式均可） | 原生 |
+| space + p | 预览 git 编辑变化 | gitsigns |
+| space + r | 将该 chunk 恢复到上一次 commit | gitsigns |
 | shift + left / right | 向左/向右以词为单位移动（i/n模式均可） | 原生 |
 | option + up / down | 移动到最上/最下（i模式） | 原生 |
 | shift + backspace | 以词为单位删除（i模式） | 原生 |
