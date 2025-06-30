@@ -5,6 +5,18 @@ return {
         "nvim-treesitter/nvim-treesitter",
     },
     opts = {
+        display = {
+            diff = { provider = 'mini_diff' },
+            chat = {
+                icons = {
+                    buffer_pin = " ",
+                    buffer_watch = "👀 ",
+                },
+                window = {
+                    border = "rounded",
+                }
+            }
+        },
         adapters = {
             openrouter = function()
                 return require("codecompanion.adapters").extend("openai_compatible", {
