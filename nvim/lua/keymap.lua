@@ -1,4 +1,5 @@
 local opts = {
+    silent = true,
     noremap = true
 }
 
@@ -30,6 +31,10 @@ vim.keymap.set('n', '<M-Up>', ":resize +2<CR>")
 vim.keymap.set('n', '<M-Down>', ":resize -2<CR>")
 vim.keymap.set('n', '<M-Left>', ":vetical resize -2<CR>")
 vim.keymap.set('n', '<M-Right>', ":vertical resize +2<CR>")
-vim.keymap.set('v', '<C-y>', "\"+y")
-vim.keymap.set('v', '<C-d>', "\"_d")
+vim.keymap.set('v', 'y', "\"+y")
+vim.keymap.set('n', 'p', "\"+p")
+vim.keymap.set('v', 'd', "\"+d")
 vim.keymap.set('v', 'x', '"_x')
+
+-- TODO keymap related to plugin. In future all keymaps in config should be moved here
+vim.keymap.set("n", "<leader>c", "<cmd>CodeCompanionChat Toggle<CR>", opts)

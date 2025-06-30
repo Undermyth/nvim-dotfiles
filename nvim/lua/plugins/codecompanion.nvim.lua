@@ -4,6 +4,9 @@ return {
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",
     },
+    -- config = function()
+    --     require("config.codecompanion")
+    -- end,
     opts = {
         display = {
             diff = { provider = 'mini_diff' },

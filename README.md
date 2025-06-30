@@ -40,7 +40,7 @@
 | ctrl + e | 取消补全提示 | blink-cmp |
 | space + ga | 接受行内编辑 | codecompanion |
 | space + gr | 拒绝行内编辑 | codecompanion |
-| :CodeCompanionChat | 启动 LLM 会话 | codecompanion | 
+| space + c | 启动/隐藏 LLM 会话 | codecompanion | 
 | ctrl + s | 在 LLM 会话中发送 prompt（send） | codecompanion |
 | ctrl + k | 逐字接受行内补全 | windsurf |
 
