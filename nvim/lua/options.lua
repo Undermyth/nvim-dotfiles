@@ -31,24 +31,24 @@ vim.opt.smartcase = true -- but make it case sensitive if an uppercase is entere
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+-- clipboard
 vim.g.clipboard = 'osc52'
 -- vim.o.winborder = "rounded"
 
--- [[ 自动高亮光标下的单词 (无副作用) ]]
+-- cursor
+vim.opt.guicursor = { "n-c:block,i-t-v-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175" }
 
+-- auto highlight 
 -- 1. 创建一个 augroup (自动命令组)，方便管理
 local auto_highlight_group = vim.api.nvim_create_augroup("AutoHighlight", { clear = true })
-
 -- 2. 设置触发 CursorHold 事件的延迟时间
 vim.opt.updatetime = 300
-
 -- 3. 定义当光标移动或离开时清除高亮的功能
 local function clear_document_highlights()
     -- 如果 document highlight 的窗口存在，就关闭它
     -- 这是最可靠的清除方法
     pcall(vim.lsp.buf.clear_references)
 end
-
 -- 4. 当光标移动时，立即清除旧的高亮
 vim.api.nvim_create_autocmd({ "CursorMoved" }, {
     group = auto_highlight_group,
@@ -56,7 +56,6 @@ vim.api.nvim_create_autocmd({ "CursorMoved" }, {
         clear_document_highlights()
     end,
 })
-
 -- 5. 当光标停留时，在 normal 模式下触发新的高亮
 vim.api.nvim_create_autocmd({ "CursorHold" }, {
     group = auto_highlight_group,
@@ -69,7 +68,6 @@ vim.api.nvim_create_autocmd({ "CursorHold" }, {
         end
     end,
 })
-
 -- (可选) 增加一个手动清除的快捷键，例如按 ESC 清除
 vim.keymap.set('n', '<Esc>', function()
     clear_document_highlights()
