@@ -81,11 +81,11 @@ return {
 
 		-- Signature help when tying
 		signature = {
-            enabled = true,
-            window = {
-                border = "rounded",
-                show_documentation = true
-            }
+            enabled = false,
+            -- window = {
+            --     border = "rounded",
+            --     show_documentation = true
+            -- }
         },
 	},
 	opts_extend = { "sources.default" },
