@@ -8,7 +8,7 @@ return {
                 auto_trigger_ft = { '*' },
                 keymap = {
                     -- accept whole completion
-                    accept = '<Tab>',
+                    accept = nil,
                     -- accept one line
                     accept_line = nil,
                     -- accept n lines (prompts for number)
@@ -23,6 +23,9 @@ return {
                 },
             },
             provider = 'openai_compatible',
+            throttle = 500,
+            debounce = 250,
+            n_completions = 1,
             provider_options = {
                 openai_compatible = {
                     api_key = 'OPENROUTER_API_KEY',
@@ -32,5 +35,14 @@ return {
                 }
             },
         }
+        vim.keymap.set('i', '<Tab>', function()
+            local minuet_virtual = require('minuet.virtualtext')
+            if minuet_virtual.action.is_visible() then
+                minuet_virtual.action.accept()
+            else
+                -- vim.cmd('call feedkeys("\\<Tab>")')
+                return vim.api.nvim_replace_termcodes('<Tab>', true, true, true)
+            end
+        end, { expr = true})
     end,
 }
