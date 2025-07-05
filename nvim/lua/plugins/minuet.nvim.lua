@@ -23,14 +23,14 @@ return {
                 },
             },
             provider = 'openai_compatible',
-            throttle = 500,
-            debounce = 250,
+            throttle = 1000,
+            debounce = 500,
             n_completions = 1,
             provider_options = {
                 openai_compatible = {
                     api_key = 'OPENROUTER_API_KEY',
                     end_point = 'https://openrouter.ai/api/v1/chat/completions',
-                    model = 'qwen/qwen-2.5-coder-32b-instruct',
+                    model = 'mistralai/mistral-small-3.2-24b-instruct',
                     name = 'OpenRouter',
                 }
             },
