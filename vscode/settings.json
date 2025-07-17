@@ -56,6 +56,11 @@
         "jupyter-notebook": "left"
     },
     "jupyter.askForKernelRestart": true,
+    "jupyter.runStartupCommands": [
+        "%load_ext autoreload",
+        "%autoreload 2",
+        "import os; os.environ['HF_DATASETS_OFFLINE'] = '1'"
+    ],
     // -- python settings --
     "ruff.lineLength": 120,
     "[python]": { // 仅对 python 文件生效
