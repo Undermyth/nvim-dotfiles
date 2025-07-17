@@ -1,12 +1,4 @@
 {
-    // MODIFICATIONS:
-    // 1. custom css path for vsc.css. need reload
-    // 2. path to background picture. need reload
-    // 3. path to ssh config file
-    // 4. (optional) path to python
-    // 5. (optional) authentication to Continue & OpenRouter
-    // --- basic editor settings ---
-    "editor.fontSize": 14,
     "editor.fontFamily": "Monaco, Consolas, 'Courier New', monospace",
     "editor.minimap.showSlider": "always",
     "editor.minimap.maxColumn": 30,
@@ -22,9 +14,6 @@
     "terminal.integrated.fontSize": 16,
     "security.workspace.trust.enabled": false,
     "files.autoSave": "onFocusChange",
-
-
-
     // --- advanced editor settings ---
     "editor.cursorSmoothCaretAnimation": "on",
     "editor.smoothScrolling": true,
@@ -34,19 +23,19 @@
     "window.restoreWindows": "none",
     "workbench.startupEditor": "none",
     "vscode_custom_css.imports": [
-        "file:///Users/activator/.vscode/extensions/vsc.css"
+        "file:///Users/activator/.vscode/extensions/vsc.css",
+        "file:///Users/activator/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
     ],
     "background.enabled": true,
     "background.fullscreen": {
-        "images": ["file:///Users/activator/Pictures/term-image-blurred.jpg"], // urls of your images
+        "images": [
+            "file:///Users/activator/Pictures/term-image-blurred.jpg"
+        ], // urls of your images
         "opacity": 0.2,
         "size": "cover", // also css, `cover` to self-adaption (recommended)，or `contain`、`200px 200px`
         "position": "center", // alias to `background-position`, default `center`
         "interval": 0 // seconds of interval for carousel, default `0` to disabled.
     },
-
-
-
     // --- language assist settings ---
     "indentRainbow.excludedLanguages": [
         "c",
@@ -60,9 +49,6 @@
         "rgba(79,236,236,0.13)"
     ],
     "editor.inlayHints.enabled": "on",
-
-
-
     // --- language specific settings ---
     // -- jupyter notebook --
     "notebook.cellToolbarLocation": {
@@ -71,12 +57,13 @@
     },
     "jupyter.askForKernelRestart": true,
     // -- python settings --
-    "[python]": {                                        // 仅对 python 文件生效
+    "ruff.lineLength": 120,
+    "[python]": { // 仅对 python 文件生效
         "editor.defaultFormatter": "charliermarsh.ruff", // 默认使用 Ruff 格式化
-        "editor.formatOnSave": true,                     // 保存时自动格式化
+        "editor.formatOnSave": true, // 保存时自动格式化
         "editor.codeActionsOnSave": {
-            "source.fixAll.ruff": "explicit",            // 保存时自动修复可修复的 lint 错误
-            "source.organizeImports.ruff": "explicit",   // 保存时自动排序 import 语句
+            "source.fixAll.ruff": "explicit", // 保存时自动修复可修复的 lint 错误
+            "source.organizeImports.ruff": "explicit", // 保存时自动排序 import 语句
         }
     },
     "python.defaultInterpreterPath": "/Users/activator/miniconda3/envs/torch/bin/python",
@@ -87,9 +74,6 @@
         "workbench.action.tasks.configureTaskRunner",
         "workbench.action.tasks.runTask"
     ],
-
-
-
     // --- ssh settings ---
     "remote.SSH.configFile": "/Users/activator/.ssh/config",
     "remote.SSH.path": "C:\\cygwin64\\bin\\ssh",
@@ -104,16 +88,31 @@
     "remote.SSH.lockfilesInTmp": true,
     "remote.SSH.remoteServerListenOnSocket": true,
     "remote.SSH.connectTimeout": 300,
-
-
-
+    "remote.downloadExtensionsLocally": true,
+    "remote.SSH.localServerDownload": "always",
     // --- vim settings ---
     "vim.disableExtension": true,
     "vim.mouseSelectionGoesIntoVisualMode": false,
-
-
-
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "c",
+                "x"
+            ],
+            "after": [
+                "v",
+                "i",
+                "w",
+                "x",
+                "i"
+            ]
+        }
+    ],
     // --- other settings ---
     "extensions.autoUpdate": true,
     "extensions.autoCheckUpdates": true,
+    "editor.formatOnSave": true,
+    "editor.lineNumbers": "relative",
+    "editor.fontSize": 13,
+    "continue.enableConsole": true,
 }
