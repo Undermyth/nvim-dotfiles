@@ -22,7 +22,8 @@ return {
     config = function ()
         -- Set different settings for different languages' LSP.
         -- Support List: https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
-        local lspconfig = require("lspconfig")
+        -- local lspconfig = require("lspconfig")
+	vim.lsp.enable({ 'rust_analyzer', 'ty' })
 
         -- Case 1. For CMake Users
         --     $ cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .
@@ -33,7 +34,7 @@ return {
         -- src: https://clangd.llvm.org/installation#compile_commandsjson
         -- lspconfig.clangd.setup({})
         -- lspconfig.gopls.setup({})
-        lspconfig.rust_analyzer.setup({})
+        -- lspconfig.rust_analyzer.setup({})
         -- lspconfig.hls.setup({})
         -- lspconfig.ocamllsp.setup({})
         -- lspconfig.ruby_lsp.setup({})
@@ -60,6 +61,6 @@ return {
         --         },
         --     },
         -- })
-        lspconfig.ty.setup({})
+        -- lspconfig.ty.setup({})
         end
 }

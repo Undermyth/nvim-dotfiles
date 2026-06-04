@@ -16,9 +16,6 @@ lualine.setup({
 			"filename",
 		},
 		lualine_x = {
-            {
-                require('minuet.lualine')
-            },
 			"filesize",
 			{
 				"fileformat",
