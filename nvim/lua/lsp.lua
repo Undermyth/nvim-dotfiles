@@ -17,7 +17,7 @@ local opts = { noremap = true, silent = true }
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev({ float = { border = "rounded" } }) end, opts)
 vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next({ float = { border = "rounded" } }) end, opts)
-vim.keymap.set('n', '<leader>e', vim.diagnostic.setloclist, opts)
+-- vim.keymap.set('n', '<leader>e', vim.diagnostic.setloclist, opts)
 
 -- CursorHold: When the user doesn't press a key for the time specified with 'updatetime'
 --             By default, `updatetime` is equal to 4000 ms

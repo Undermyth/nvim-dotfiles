@@ -5,6 +5,6 @@ return {
         "neovim/nvim-lspconfig",
     },
     opts = {
-	    ensure_installed = { "pylsp", "lua_ls", "rust_analyzer", "bashls" },
+	    ensure_installed = { "ty", "rust_analyzer"},
     },
 }

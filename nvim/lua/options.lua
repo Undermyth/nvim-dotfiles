@@ -68,9 +68,3 @@ vim.api.nvim_create_autocmd({ "CursorHold" }, {
         end
     end,
 })
--- (可选) 增加一个手动清除的快捷键，例如按 ESC 清除
-vim.keymap.set('n', '<Esc>', function()
-    clear_document_highlights()
-    -- 同时清除标准搜索高亮 (如果你想的话)
-    -- vim.cmd('nohlsearch')
-end, { silent = true, desc = "Clear document highlights" })
