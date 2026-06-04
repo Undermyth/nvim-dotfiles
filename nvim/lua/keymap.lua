@@ -35,9 +35,6 @@ vim.keymap.set('v', 'y', "\"+y")
 vim.keymap.set('v', 'd', "\"+d")
 vim.keymap.set('v', 'x', '"_x')
 vim.keymap.set('v', '<BS>', '"_di')
-vim.keymap.set('n', 'cc', "viw")
-vim.keymap.set('n', 'cx', "viwxi")
+-- vim.keymap.set('n', 'cc', "viw")
+-- vim.keymap.set('n', 'cx', "viwxi")
 vim.keymap.set('n', '<C-l>', "<cmd>noh<CR>")
-
--- TODO keymap related to plugin. In future all keymaps in config should be moved here
-vim.keymap.set("n", "<leader>c", "<cmd>CodeCompanionChat Toggle<CR>", opts)
