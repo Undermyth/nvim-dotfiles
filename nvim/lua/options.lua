@@ -36,6 +36,26 @@ vim.g.maplocalleader = "\\"
 -- cursor
 vim.opt.guicursor = { "n-c:block,i-t-v-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175" }
 
+-- clipboard support
+local function paste()
+  return {
+    vim.fn.split(vim.fn.getreg(""), "\n"),
+    vim.fn.getregtype(""),
+  }
+end
+
+vim.g.clipboard = {
+  name = "OSC 52",
+  copy = {
+    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+  },
+  paste = {
+    ["+"] = paste,
+    ["*"] = paste,
+  },
+}
+
 -- auto highlight 
 -- 1. 创建一个 augroup (自动命令组)，方便管理
 local auto_highlight_group = vim.api.nvim_create_augroup("AutoHighlight", { clear = true })
