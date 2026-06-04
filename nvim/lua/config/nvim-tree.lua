@@ -4,11 +4,13 @@ if not status then
 	return
 end
 
-vim.keymap.set('n', '<leader>d', ':NvimTreeToggle<CR>')
+vim.keymap.set('n', '<leader>b', ':NvimTreeToggle<CR>')
 
 nvim_tree.setup({
     sort_by = "case_sensitive",
-	-- 是否显示 git 状态
+    -- 不劫持 netrw，保留给 telescope-file-browser
+    hijack_netrw = false,
+    -- 是否显示 git 状态
     git = {
 		enable = true,
 	},
@@ -28,5 +30,4 @@ nvim_tree.setup({
     renderer = {
         group_empty = true,
     },
-    on_attach = my_on_attach
 })

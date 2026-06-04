@@ -21,7 +21,7 @@
 | gcc | 注释当前行 | comment |
 | space + t | 打开内置终端 | toggleterm |
 | ctrl + \ | 打开/隐藏内置终端 | toggleterm |
-| space + d | 显示/隐藏文件树 | nvim-tree |
+| ctrl + b | 显示/隐藏文件树 | nvim-tree |
 | a, d, r | 创建（append）/删除（delete）/重命名（rename）文件 | nvim-tree |
 | gd / gi / gr | 跳转到定义/实现/引用（def/impl/ref）| 原生 |
 | spcae + gd / gi / gr | 跳转预览 | preview |
