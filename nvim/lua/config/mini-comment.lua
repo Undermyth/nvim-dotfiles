@@ -1,6 +1,6 @@
 local status, minicomment = pcall(require, "mini.comment")
 if not status then
-	vim.notify("nvim-tree not found")
+	vim.notify("mini.comment not found")
 	return
 end
 

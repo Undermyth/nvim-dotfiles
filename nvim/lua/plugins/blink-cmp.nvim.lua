@@ -32,7 +32,7 @@ return {
         ['<S-Tab>'] = { 'select_prev', 'fallback' },
         ['<Up>'] = { 'select_prev', 'fallback' },
         ['<Down>'] = { 'select_next', 'fallback' },
-        ['<Right>'] = { 'select_and_accept', 'fallback' }
+        ['<Enter>'] = { 'select_and_accept', 'fallback' }
     },
 
     -- (Default) Only show the documentation popup when manually triggered
