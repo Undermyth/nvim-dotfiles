@@ -5,8 +5,15 @@
 | 映射 Keymap | 功能 Function | 相关插件 Plugins |
 | --- | --- | --- |
 | ctrl + p | 文件名查找 | telescope |
-| space + f | 全局文本查找 | telescope |
+| space + f | 文件名查找 | telescope |
+| space + o | 触发代码大纲 | outline |
 | space + s | 单文件符号查找（symbol） | telescope + aerial |
+| space + d | 打开诊断汇总窗口 | blink-cmp + telescope |
+| space + e | 打开文件浏览器 | telescope-file-browser |
+| space + b | 显示/隐藏文件树 | nvim-tree |
+| space + t | 打开内置终端 | toggleterm |
+| ctrl + \ | 打开/隐藏内置终端（作为 agent panel 使用） | toggleterm |
+| c, d, r | 创建（create）/删除（delete）/重命名（rename）文件 | telescope-file-browser |
 | tab | 最近窗口轮换 | telescope |
 | space + tab | 窗口轮换（i/n模式均可） | 原生 |
 | space + p | 预览 git 编辑变化 | gitsigns |
@@ -19,10 +26,6 @@
 | space + w | 关闭 buffer | barbar |
 | gc | 整块注释（光标选中）| comment |
 | gcc | 注释当前行 | comment |
-| space + t | 打开内置终端 | toggleterm |
-| ctrl + \ | 打开/隐藏内置终端 | toggleterm |
-| ctrl + b | 显示/隐藏文件树 | nvim-tree |
-| a, d, r | 创建（append）/删除（delete）/重命名（rename）文件 | nvim-tree |
 | gd / gi / gr | 跳转到定义/实现/引用（def/impl/ref）| 原生 |
 | spcae + gd / gi / gr | 跳转预览 | preview |
 | ctrl + o / i | 跳转到上一次/下一次光标所在位置（old/into） | 原生 |
@@ -33,8 +36,6 @@
 | ctrl + d | 向后缩进（i 模式） | 原生 |
 | (n+)> | 向前缩进（n 次）（v 模式） | 原生 |
 | (n+)< | 向后缩进（n 次）（v 模式） | 原生 |
-| space + o | 触发代码大纲 | aerial |
-| space + e | 打开诊断汇总窗口 | blink-cmp |
 | ]d | 跳转到下一个诊断 | blink-cmp |
 | [d | 跳转到上一个诊断 | blink-cmp |
 | ctrl + e | 取消补全提示 | blink-cmp |
