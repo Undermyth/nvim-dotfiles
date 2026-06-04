@@ -15,4 +15,5 @@ toggleterm.setup({
         border = "curved",
         title_pos = "center",
     },
+    shade_terminals = false
 })
