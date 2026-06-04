@@ -8,8 +8,9 @@ vim.keymap.set('n', '<leader>t', "<cmd>ToggleTerm<CR>")
 
 toggleterm.setup({
     open_mapping = [[<C-\>]],
+    size = 100,
     start_in_insert = true,
-    direction = 'float',
+    direction = 'vertical',
     float_opts = {
         border = "curved",
         title_pos = "center",

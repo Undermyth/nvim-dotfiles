@@ -31,8 +31,6 @@ vim.opt.smartcase = true -- but make it case sensitive if an uppercase is entere
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- clipboard
-vim.g.clipboard = 'osc52'
 -- vim.o.winborder = "rounded"
 
 -- cursor

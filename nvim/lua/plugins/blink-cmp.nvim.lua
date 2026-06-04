@@ -29,7 +29,10 @@ return {
     keymap = {
         preset = 'none',
         ['<Tab>'] = { 'select_next', 'fallback' },
-        ['<S-Tab>'] = { 'select_prev', 'fallback' }
+        ['<S-Tab>'] = { 'select_prev', 'fallback' },
+        ['<Up>'] = { 'select_prev', 'fallback' },
+        ['<Down>'] = { 'select_next', 'fallback' },
+        ['<Right>'] = { 'select_and_accept', 'fallback' }
     },
 
     -- (Default) Only show the documentation popup when manually triggered
