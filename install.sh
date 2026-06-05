@@ -196,16 +196,7 @@ if [ "$INSTALL_DEPS" = true ]; then
     echo ""
     echo "  >> reasonix (DeepSeek-Reasonix)"
     download "https://github.com/esengine/DeepSeek-Reasonix/releases/download/v1.2.0/reasonix-linux-amd64.tar.gz" "/tmp/reasonix.tar.gz"
-    RX_TMP="$(mktemp -d)"
-    tar xzf "/tmp/reasonix.tar.gz" -C "$RX_TMP"
-    if [ -f "$RX_TMP/reasonix-desktop" ]; then
-        mv "$RX_TMP/reasonix-desktop" "$BIN_DIR/reasonix"
-        chmod +x "$BIN_DIR/reasonix"
-        echo "     ✓ reasonix"
-    else
-        echo "    ⚠️  在 reasonix 压缩包中找不到二进制，跳过"
-    fi
-    rm -rf "$RX_TMP"
+    extract_binary "/tmp/reasonix.tar.gz" "reasonix" "$BIN_DIR"
     rm -f "/tmp/reasonix.tar.gz"
 
     # ----- 2.3 Python 包 -----
