@@ -195,7 +195,7 @@ if [ "$INSTALL_DEPS" = true ]; then
 
     echo ""
     echo "  >> reasonix (DeepSeek-Reasonix)"
-    download "https://github.com/esengine/DeepSeek-Reasonix/releases/download/desktop-v1.2.1/Reasonix-linux-amd64.tar.gz" "/tmp/reasonix.tar.gz"
+    download "https://github.com/esengine/DeepSeek-Reasonix/releases/download/v1.2.0/reasonix-linux-amd64.tar.gz" "/tmp/reasonix.tar.gz"
     RX_TMP="$(mktemp -d)"
     tar xzf "/tmp/reasonix.tar.gz" -C "$RX_TMP"
     if [ -f "$RX_TMP/reasonix-desktop" ]; then
