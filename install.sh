@@ -199,6 +199,10 @@ if [ "$INSTALL_DEPS" = true ]; then
     extract_binary "/tmp/reasonix.tar.gz" "reasonix" "$BIN_DIR"
     rm -f "/tmp/reasonix.tar.gz"
 
+    echo ""
+    echo "  >> Claude Code"
+    curl -fsSL https://claude.ai/install.sh | bash
+
     # ----- 2.3 Python 包 -----
     echo ""
     echo "  >> Python 包"
@@ -264,6 +268,7 @@ if [ "$INSTALL_DEPS" = true ]; then
     copy_config_dir "$REPO_DIR/nvim" "$HOME/.config/nvim" "nvim"
     copy_config_file "$REPO_DIR/reasonix/config.toml" "$HOME/.config/reasonix/config.toml" "reasonix"
     copy_config_file "$REPO_DIR/zellij/config.kdl" "$HOME/.config/zellij/config.kdl" "zellij"
+    copy_config_file "$REPO_DIR/claude/settings.json" "$HOME/.claude/" "claude"
     # wezterm 配置由用户自行管理，不在此处理
 
     # ----- 2.6 安装后提醒 -----
@@ -308,5 +313,6 @@ if [ "$INSTALL_DEPS" != true ]; then
     copy_config_dir "$REPO_DIR/nvim" "$HOME/.config/nvim" "nvim"
     copy_config_file "$REPO_DIR/reasonix/config.toml" "$HOME/.config/reasonix/config.toml" "reasonix"
     copy_config_file "$REPO_DIR/zellij/config.kdl" "$HOME/.config/zellij/config.kdl" "zellij"
+    copy_config_file "$REPO_DIR/claude/settings.json" "$HOME/.claude/" "claude"
     echo "✅ 完成！"
 fi
