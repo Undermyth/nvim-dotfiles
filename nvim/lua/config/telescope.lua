@@ -18,7 +18,7 @@ vim.keymap.set("n", "<leader>e", ":Telescope file_browser<CR>")
 -- 诊断
 vim.keymap.set("n", "<leader>d", ":Telescope diagnostics<CR>")
 -- git status
-vim.keymap.set("n", "<leader>u", "Telescope git_status")
+vim.keymap.set("n", "<leader>u", "Telescope git_status<CR>")
 
 -- 将 Ctrl-Tab 映射到 Telescope 的 buffer 列表
 -- `sort_mru = true` 是默认值，所以通常不用显式写出
