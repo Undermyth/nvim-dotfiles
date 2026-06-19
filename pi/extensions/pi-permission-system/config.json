@@ -1,0 +1,68 @@
+{
+  "$schema": "https://raw.githubusercontent.com/gotgenes/pi-packages/refs/heads/main/packages/pi-permission-system/schemas/permissions.schema.json",
+  "debugLog": false,
+  "permissionReviewLog": false,
+  "yoloMode": false,
+
+  "permission": {
+    "*": "ask",
+
+    "read": "allow",
+    "write": "ask",
+    "edit": "ask",
+    "ls": "allow",
+
+    "grep": "deny",
+    "find": "deny",
+
+    "external_directory": {
+      "*": "ask",
+      "~/.pi/agent/sessions/*": "allow"
+    },
+
+    "path": {
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "~/.ssh/*": "deny",
+      "$HOME/.ssh/*": "deny"
+    },
+
+    "bash": {
+      "*": "allow",
+      "Remove-Item *": "ask",
+      "remove-item *": "ask",
+      "rm *": "ask",
+      "del *": "ask",
+      "erase *": "ask",
+      "rd *": "ask",
+      "rmdir *": "ask",
+      "ri *": "ask",
+      "mv *": "ask",
+
+      "cmd /c del *": "ask",
+      "cmd /c erase *": "ask",
+      "cmd /c rd *": "ask",
+      "cmd /c rmdir *": "ask",
+      "cmd.exe /c del *": "ask",
+      "cmd.exe /c erase *": "ask",
+      "cmd.exe /c rd *": "ask",
+      "cmd.exe /c rmdir *": "ask",
+
+      "powershell *Remove-Item*": "ask",
+      "powershell.exe *Remove-Item*": "ask",
+      "pwsh *Remove-Item*": "ask",
+      "pwsh.exe *Remove-Item*": "ask",
+
+      "git clean *": "ask",
+      "git reset --hard *": "ask",
+      "git checkout -- *": "ask",
+      "git restore *": "ask",
+
+      "Clear-Content *": "ask",
+      "Set-Content *": "ask",
+      "Out-File *": "ask",
+      "Move-Item *": "ask",
+      "Rename-Item *": "ask"
+    }
+  }
+}

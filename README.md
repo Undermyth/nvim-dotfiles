@@ -3,7 +3,29 @@ Neovim Configuration for Python
 
 ## Installation
 
-该配置使用 Neovim + Zellij + Reasonix 提供完整的 python 编辑体验。安装脚本 `install.sh` 可实现一键安装。
+该配置使用 Neovim + Zellij + Reasonix / Pi / Claude Code 提供完整的 python 编辑体验。安装脚本 `install.sh` 可实现一键安装。
+
+### 常用命令
+
+```bash
+./install.sh                                          # 仅复制 nvim 配置
+./install.sh --clean                                  # 清理后复制 nvim 配置
+./install.sh --install-dependencies ~/tools            # 安装所有依赖（nvim + 工具 + agent）
+./install.sh --clean --install-dependencies ~/tools   # 全量安装
+./install.sh --agent-only                             # 仅复制所有 agent 配置
+./install.sh --agent-only --agents pi                 # 仅复制 pi 配置
+./install.sh --install-dependencies ~/tools --agents pi,claude  # 仅安装 pi + claude
+```
+
+### 选项说明
+
+| 选项 | 说明 |
+|------|------|
+| `--clean` | 清理旧的 nvim 配置和缓存后重新复制 |
+| `--install-dependencies <path>` | 下载并安装所有依赖到指定目录 |
+| `--skip-python` | 跳过 Python 包安装 |
+| `--agent-only` | 仅复制 agent 框架配置，不处理 nvim/zellij |
+| `--agents <list>` | 指定要安装/配置的 agent，逗号分隔。可用值: `pi`, `claude`, `reasonix` |
 
 ## Key Mapping
 | 映射 Keymap | 功能 Function | 相关插件 Plugins |
@@ -62,7 +84,23 @@ treesitter 完成的是 AST 的解析，提供语言相关的语法高亮和格�
 现代终端均可，没有过多的要求。`wezterm` 和 `kitty` 均是可用的。`wezterm` 的 config 也位于该仓库中，拷贝至客户端的 `~/.config/wezterm` 即可。
 
 ### Agentic Coding
-使用 ToggleTerm 作为 agent panel，运行 Reasonix 作为 agent 框架。由 DeepSeek V4 Flash/Pro 完成。
+支持三个 agent 框架，均使用 DeepSeek V4 Flash/Pro 作为后端：
+
+| Agent | 安装方式 | 配置位置 |
+|-------|----------|----------|
+| **Pi** | `curl -fsSL https://pi.dev/install.sh \| sh` | `pi/` → `~/.pi/agent/` |
+| **Claude Code** | `curl -fsSL https://claude.ai/install.sh \| bash` | `claude/settings.json` → `~/.claude/` |
+| **Reasonix** | 下载二进制 tarball | `reasonix/config.toml` → `~/.config/reasonix/` |
+
+Pi 配置包含以下自定义内容：
+- **Provider / Model 定义**：DeepSeek V4 Pro / Flash（`models.json`）
+- **Extension**：websearch（SearXNG 搜索集成）、plan-mode（计划模式）、token-detail（Token 用量）
+- **第三方 Package**：permission-system、subagents、btw、fff、wtf、tool-display、powerline-footer
+- **系统提示词**：`APPEND_SYSTEM.md`
+
+第三方 Package 由 Pi 的 package 系统根据 `settings.json` 自动安装，其代码不纳入本仓库。仅 `pi-permission-system` 的用户配置文件纳入。
+
+在 Neovim 中使用 `ctrl + \` 打开 ToggleTerm 作为 agent panel，可运行任意 agent 框架。
 
 ### Others
 主题可以通过`:Telescope colorscheme`进行选择。但是想要永久生效，必须通过`colorscheme.lua`进行配置。

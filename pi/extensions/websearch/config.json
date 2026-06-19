@@ -1,0 +1,4 @@
+{
+  "url": "https://searxng.chensy.moe/servers/searxng/mcp",
+  "token": "${XNG_KEY}"
+}
