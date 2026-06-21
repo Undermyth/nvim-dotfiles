@@ -1,0 +1,7 @@
+{
+  "name": "pi-subagents",
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  }
+}

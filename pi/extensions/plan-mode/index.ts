@@ -202,81 +202,108 @@ After completing a step, include a [DONE:n] tag in your response.`,
 	// Track progress after each turn
 	pi.on("turn_end", async (event, ctx) => {
 		if (!executionMode || todoItems.length === 0) return;
-		if (!isAssistantMessage(event.message)) return;
 
-		const text = getTextContent(event.message);
-		if (markCompletedSteps(text, todoItems) > 0) {
-			updateStatus(ctx);
+		// Scan main assistant message for [DONE:n] markers
+		let changed = false;
+		if (isAssistantMessage(event.message)) {
+			if (markCompletedSteps(getTextContent(event.message), todoItems) > 0) {
+				changed = true;
+			}
 		}
-		persistState();
+
+		// Also scan subagent/tool result text (subagent outputs may contain [DONE:n])
+		if (event.toolResults) {
+			for (const tr of event.toolResults) {
+				const toolText = (tr.content ?? [])
+					.filter((b): b is TextContent => b.type === "text")
+					.map((b) => b.text)
+					.join("\n");
+				if (markCompletedSteps(toolText, todoItems) > 0) {
+					changed = true;
+				}
+			}
+		}
+
+		if (changed) {
+			updateStatus(ctx);
+			persistState(); // Only persist when state actually changed
+		}
 	});
 
 	// Handle plan completion and plan mode UI
 	pi.on("agent_end", async (event, ctx) => {
-		// Check if execution is complete
-		if (executionMode && todoItems.length > 0) {
-			if (todoItems.every((t) => t.completed)) {
-				const completedList = todoItems.map((t) => `~~${t.text}~~`).join("\n");
+		try {
+			// Check if execution is complete
+			if (executionMode && todoItems.length > 0) {
+				if (todoItems.every((t) => t.completed)) {
+					const completedList = todoItems.map((t) => `~~${t.text}~~`).join("\n");
+					pi.sendMessage(
+						{ customType: "plan-complete", content: `**Plan Complete!** \n\n${completedList}`, display: true },
+						{ triggerTurn: false },
+					);
+					executionMode = false;
+					todoItems = [];
+					updateStatus(ctx);
+					persistState(); // Save cleared state so resume doesn't restore old execution mode
+				}
+				return;
+			}
+
+			if (!planModeEnabled || !ctx.hasUI) return;
+
+			// Extract todos from last assistant message
+			const lastAssistant = [...event.messages].reverse().find(isAssistantMessage);
+			if (lastAssistant) {
+				const extracted = extractTodoItems(getTextContent(lastAssistant));
+				if (extracted.length > 0) {
+					todoItems = extracted;
+				}
+			}
+
+			// Show plan steps and prompt for next action
+			if (todoItems.length > 0) {
+				const todoListText = todoItems.map((t, i) => `${i + 1}.  ${t.text}`).join("\n");
 				pi.sendMessage(
-					{ customType: "plan-complete", content: `**Plan Complete!** \n\n${completedList}`, display: true },
+					{
+						customType: "plan-todo-list",
+						content: `**Plan Steps (${todoItems.length}):**\n\n${todoListText}`,
+						display: true,
+					},
 					{ triggerTurn: false },
 				);
-				executionMode = false;
-				todoItems = [];
+			}
+
+			const choice = await ctx.ui.select("Plan mode - what next?", [
+				todoItems.length > 0 ? "Execute the plan (track progress)" : "Execute the plan",
+				"Stay in plan mode",
+				"Refine the plan",
+			]);
+
+			if (choice?.startsWith("Execute")) {
+				planModeEnabled = false;
+				executionMode = todoItems.length > 0;
 				updateStatus(ctx);
-				persistState(); // Save cleared state so resume doesn't restore old execution mode
+				persistState();
+
+				const execMessage =
+					todoItems.length > 0
+						? `Execute the plan. Start with: ${todoItems[0].text}`
+						: "Execute the plan you just created.";
+				pi.sendMessage(
+					{ customType: "plan-mode-execute", content: execMessage, display: true },
+					{ triggerTurn: true },
+				);
+			} else if (choice === "Refine the plan") {
+				const refinement = await ctx.ui.editor("Refine the plan:", "");
+				if (refinement?.trim()) {
+					pi.sendUserMessage(refinement.trim(), { deliverAs: "followUp" });
+				}
+			} else if (choice) {
+				// "Stay in plan mode" — give user feedback
+				ctx.ui.notify("Plan mode active. Send another prompt to refine the plan.", "info");
 			}
-			return;
-		}
-
-		if (!planModeEnabled || !ctx.hasUI) return;
-
-		// Extract todos from last assistant message
-		const lastAssistant = [...event.messages].reverse().find(isAssistantMessage);
-		if (lastAssistant) {
-			const extracted = extractTodoItems(getTextContent(lastAssistant));
-			if (extracted.length > 0) {
-				todoItems = extracted;
-			}
-		}
-
-		// Show plan steps and prompt for next action
-		if (todoItems.length > 0) {
-			const todoListText = todoItems.map((t, i) => `${i + 1}.  ${t.text}`).join("\n");
-			pi.sendMessage(
-				{
-					customType: "plan-todo-list",
-					content: `**Plan Steps (${todoItems.length}):**\n\n${todoListText}`,
-					display: true,
-				},
-				{ triggerTurn: false },
-			);
-		}
-
-		const choice = await ctx.ui.select("Plan mode - what next?", [
-			todoItems.length > 0 ? "Execute the plan (track progress)" : "Execute the plan",
-			"Stay in plan mode",
-			"Refine the plan",
-		]);
-
-		if (choice?.startsWith("Execute")) {
-			planModeEnabled = false;
-			executionMode = todoItems.length > 0;
-			updateStatus(ctx);
-
-			const execMessage =
-				todoItems.length > 0
-					? `Execute the plan. Start with: ${todoItems[0].text}`
-					: "Execute the plan you just created.";
-			pi.sendMessage(
-				{ customType: "plan-mode-execute", content: execMessage, display: true },
-				{ triggerTurn: true },
-			);
-		} else if (choice === "Refine the plan") {
-			const refinement = await ctx.ui.editor("Refine the plan:", "");
-			if (refinement?.trim()) {
-				pi.sendUserMessage(refinement.trim());
-			}
+		} catch (err) {
+			ctx.ui.notify(`Plan mode error: ${(err as Error).message}`, "error");
 		}
 	});
 

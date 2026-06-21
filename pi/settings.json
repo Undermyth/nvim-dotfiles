@@ -1,9 +1,8 @@
 {
-  "lastChangelogVersion": "0.79.6",
+  "lastChangelogVersion": "0.79.9",
   "defaultThinkingLevel": "low",
   "packages": [
     "npm:@gotgenes/pi-permission-system",
-    "npm:@gotgenes/pi-subagents",
     "npm:@narumitw/pi-btw",
     "npm:pi-tool-display",
     "npm:@ff-labs/pi-fff",
@@ -13,8 +12,18 @@
   "powerline": {
     "preset": "default",
     "customItems": [
-      { "id": "token-in",  "statusKey": "token-in",  "position": "right", "color": "muted" },
-      { "id": "token-out", "statusKey": "token-out", "position": "right", "color": "muted" }
+      {
+        "id": "token-in",
+        "statusKey": "token-in",
+        "position": "right",
+        "color": "muted"
+      },
+      {
+        "id": "token-out",
+        "statusKey": "token-out",
+        "position": "right",
+        "color": "muted"
+      }
     ]
   },
   "theme": "dark",

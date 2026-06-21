@@ -108,8 +108,9 @@ export interface TodoItem {
 
 export function cleanStepText(text: string): string {
 	let cleaned = text
-		.replace(/\*{1,2}([^*]+)\*{1,2}/g, "$1") // Remove bold/italic
-		.replace(/`([^`]+)`/g, "$1") // Remove code
+		.replace(/\*{1,2}/g, "") // Remove bold/italic markers (all * and **)
+		.replace(/`([^`]+)`/g, "$1") // Remove inline code
+		.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // Remove markdown links [text](url)
 		.replace(
 			/^(Use|Run|Execute|Create|Write|Read|Check|Verify|Update|Modify|Add|Remove|Delete|Install)\s+(the\s+)?/i,
 			"",
@@ -132,18 +133,17 @@ export function extractTodoItems(message: string): TodoItem[] {
 	if (!headerMatch) return items;
 
 	const planSection = message.slice(message.indexOf(headerMatch[0]) + headerMatch[0].length);
-	const numberedPattern = /^\s*(\d+)[.)]\s+\*{0,2}([^*\n]+)/gm;
+	// More permissive: capture everything after "N. " or "N) " on each line
+	const numberedPattern = /^\s*(\d+)[.)]\s+(.+)$/gm;
 
 	for (const match of planSection.matchAll(numberedPattern)) {
-		const text = match[2]
-			.trim()
-			.replace(/\*{1,2}$/, "")
-			.trim();
-		if (text.length > 5 && !text.startsWith("`") && !text.startsWith("/") && !text.startsWith("-")) {
-			const cleaned = cleanStepText(text);
-			if (cleaned.length > 3) {
-				items.push({ step: items.length + 1, text: cleaned, completed: false });
-			}
+		const text = match[2].trim();
+		// Skip lines that are clearly not step descriptions
+		if (!text || text.startsWith("`") || text.startsWith("/")) continue;
+
+		const cleaned = cleanStepText(text);
+		if (cleaned.length >= 3) {
+			items.push({ step: items.length + 1, text: cleaned, completed: false });
 		}
 	}
 	return items;
