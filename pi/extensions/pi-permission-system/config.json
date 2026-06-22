@@ -12,6 +12,11 @@
     "edit": "ask",
     "ls": "allow",
 
+    "web_url_read": "allow",
+    "searxng_web_search": "allow",
+    "searxng_search_suggestions": "allow",
+    "searxng_instance_info": "allow",
+
     "grep": "deny",
     "find": "deny",
 
