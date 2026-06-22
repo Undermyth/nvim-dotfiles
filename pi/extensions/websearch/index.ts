@@ -12,6 +12,7 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { StringEnum, Type } from "@earendil-works/pi-ai";
 import { Text } from "@earendil-works/pi-tui";
 import { callMcpTool, loadConfig, type WebSearchConfig } from "./utils.ts";
+import { platform } from "node:os";
 
 // ---------------------------------------------------------------------------
 // Factory
@@ -20,7 +21,13 @@ import { callMcpTool, loadConfig, type WebSearchConfig } from "./utils.ts";
 export default function websearchExtension(pi: ExtensionAPI): void {
 	// Resolve the directory of this extension file (hack: derive from utils).
 	// utils.ts lives next to index.ts.
-	const extensionsDir = new URL(".", import.meta.url).pathname.replace(/\/websearch\/$/, "");
+	let parentDir = new URL(".", import.meta.url).pathname;
+	// On Windows, URL.pathname produces /C:/foo which path.resolve
+	// misinterprets. Strip the leading slash for Win32.
+	if (platform() === "win32" && /^\/[a-zA-Z]:\//.test(parentDir)) {
+		parentDir = parentDir.slice(1);
+	}
+	const extensionsDir = parentDir.replace(/\/websearch\/$/, "");
 	const config: WebSearchConfig = loadConfig(extensionsDir);
 
 	if (!config.url) {
