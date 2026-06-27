@@ -1,0 +1,135 @@
+{
+  "$schema": "https://raw.githubusercontent.com/placeholder/toolgate-schema.json",
+  "subagent": {
+    "*": "ask",
+
+    "read": "allow",
+    "write": "ask",
+    "edit": "ask",
+    "ls": "allow",
+    "fffind": "allow",
+    "ffgrep": "allow",
+
+    "web_url_read": "allow",
+    "searxng_web_search": "allow",
+    "searxng_search_suggestions": "allow",
+    "searxng_instance_info": "allow",
+
+    "bash": {
+      "*": "allow",
+
+      "rm *": "ask",
+      "rmdir *": "ask",
+      "del *": "ask",
+      "erase *": "ask",
+      "rd *": "ask",
+      "ri *": "ask",
+      "mv *": "ask",
+      "Remove-Item *": "ask",
+      "remove-item *": "ask",
+      "Move-Item *": "ask",
+      "Rename-Item *": "ask",
+
+      "cmd /c del *": "ask",
+      "cmd /c erase *": "ask",
+      "cmd /c rd *": "ask",
+      "cmd /c rmdir *": "ask",
+      "cmd.exe /c del *": "ask",
+      "cmd.exe /c erase *": "ask",
+      "cmd.exe /c rd *": "ask",
+      "cmd.exe /c rmdir *": "ask",
+
+      "powershell *Remove-Item*": "ask",
+      "powershell.exe *Remove-Item*": "ask",
+      "pwsh *Remove-Item*": "ask",
+      "pwsh.exe *Remove-Item*": "ask",
+      "Clear-Content *": "ask",
+      "Set-Content *": "ask",
+      "Out-File *": "ask",
+
+      "git clean *": "ask",
+      "git reset --hard *": "ask",
+      "git checkout -- *": "ask",
+      "git restore *": "ask",
+      "git push --force *": "deny",
+      "git push -f *": "deny",
+
+      "sudo *": "deny",
+      "su *": "deny",
+      "chmod 777 *": "deny",
+
+      "npm publish *": "ask",
+      "pip install *": "ask",
+      "cargo install *": "ask",
+      "curl * | sh": "deny",
+      "curl * | bash": "deny",
+      "wget * -O - | sh": "deny"
+    }
+  },
+  "default": {
+    "*": "ask",
+
+    "read": "allow",
+    "write": "ask",
+    "edit": "ask",
+    "ls": "allow",
+    "fffind": "allow",
+    "ffgrep": "allow",
+
+    "web_url_read": "allow",
+    "searxng_web_search": "allow",
+    "searxng_search_suggestions": "allow",
+    "searxng_instance_info": "allow",
+
+    "bash": {
+      "*": "allow",
+
+      "rm *": "ask",
+      "rmdir *": "ask",
+      "del *": "ask",
+      "erase *": "ask",
+      "rd *": "ask",
+      "ri *": "ask",
+      "mv *": "ask",
+      "Remove-Item *": "ask",
+      "remove-item *": "ask",
+      "Move-Item *": "ask",
+      "Rename-Item *": "ask",
+
+      "cmd /c del *": "ask",
+      "cmd /c erase *": "ask",
+      "cmd /c rd *": "ask",
+      "cmd /c rmdir *": "ask",
+      "cmd.exe /c del *": "ask",
+      "cmd.exe /c erase *": "ask",
+      "cmd.exe /c rd *": "ask",
+      "cmd.exe /c rmdir *": "ask",
+
+      "powershell *Remove-Item*": "ask",
+      "powershell.exe *Remove-Item*": "ask",
+      "pwsh *Remove-Item*": "ask",
+      "pwsh.exe *Remove-Item*": "ask",
+      "Clear-Content *": "ask",
+      "Set-Content *": "ask",
+      "Out-File *": "ask",
+
+      "git clean *": "ask",
+      "git reset --hard *": "ask",
+      "git checkout -- *": "ask",
+      "git restore *": "ask",
+      "git push --force *": "deny",
+      "git push -f *": "deny",
+
+      "sudo *": "deny",
+      "su *": "deny",
+      "chmod 777 *": "deny",
+
+      "npm publish *": "ask",
+      "pip install *": "ask",
+      "cargo install *": "ask",
+      "curl * | sh": "deny",
+      "curl * | bash": "deny",
+      "wget * -O - | sh": "deny"
+    }
+  }
+}

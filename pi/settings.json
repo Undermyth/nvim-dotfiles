@@ -1,8 +1,7 @@
 {
-  "lastChangelogVersion": "0.79.9",
+  "lastChangelogVersion": "0.80.2",
   "defaultThinkingLevel": "low",
   "packages": [
-    "npm:@gotgenes/pi-permission-system",
     "npm:@narumitw/pi-btw",
     "npm:pi-tool-display",
     "npm:@ff-labs/pi-fff",
@@ -28,5 +27,5 @@
   },
   "theme": "dark",
   "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-pro"
+  "defaultModel": "deepseek-v4-flash"
 }
