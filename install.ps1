@@ -148,9 +148,6 @@ function Install-Pi {
 
   # toolgate
   Copy-ConfigDir "$RepoDir\pi\extensions\toolgate" "$piDir\extensions\toolgate" "pi toolgate"
-
-  # pi-permission-system config
-  Copy-ConfigFile "$RepoDir\pi\extensions\pi-permission-system\config.json" "$piDir\extensions\pi-permission-system\config.json" "pi permission config"
 }
 
 function Install-Claude {

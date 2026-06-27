@@ -226,9 +226,6 @@ copy_pi_config() {
 
     # toolgate 扩展（权限门控系统）
     copy_config_dir "$REPO_DIR/pi/extensions/toolgate" "$HOME/.pi/agent/extensions/toolgate" "pi toolgate"
-
-    # pi-permission-system 用户配置（第三方 package 的 config，非代码）
-    copy_config_file "$REPO_DIR/pi/extensions/pi-permission-system/config.json" "$HOME/.pi/agent/extensions/pi-permission-system/config.json" "pi permission config"
 }
 
 copy_claude_config() {
