@@ -1,8 +1,8 @@
 /**
  * confirm-dialog.ts — Three-way confirmation dialog for toolgate.
  *
- * Replaces the simple yes/no confirm with a richer dialog that lets
- * the user: approve (y), deny (n), or deny with a typed reason (r).
+ * Lets the user choose among three options using arrow-key navigation:
+ *   Approve, Deny, Reject with reason.
  *
  * Rendered as a non-overlay custom component (like questionnaire), so the
  * dialog appears in the normal message area rather than as a floating
@@ -14,79 +14,42 @@
  */
 
 import type { Component } from "@earendil-works/pi-tui";
-import { matchesKey, Key } from "@earendil-works/pi-tui";
+import { matchesKey, Key, wrapTextWithAnsi, visibleWidth } from "@earendil-works/pi-tui";
 import type { Theme } from "@earendil-works/pi-coding-agent";
 import type { ExtensionContext } from "@earendil-works/pi-coding-agent";
 
 // ── Callbacks ────────────────────────────────────────────────────────────
 
 export interface ConfirmWithReasonCallbacks {
-	/** User pressed y/Y — approve the tool call. */
+	/** User selected Approve — allow the tool call. */
 	onApprove: () => void;
-	/** User pressed n/N or Escape — deny without a reason. */
+	/** User selected Deny or pressed Escape — deny without a reason. */
 	onDeny: () => void;
-	/** User pressed r/R, typed a reason, and pressed Enter. */
+	/** User typed a reason and pressed Enter. */
 	onRejectWithReason: (reason: string) => void;
+	/** User pressed Ctrl+O — toggle tool output (preview window) expand/collapse. */
+	onToggleTools?: () => void;
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────
+// ── Selectable option definition ─────────────────────────────────────────
 
-/**
- * Word-wrap a string to fit within `maxWidth`.
- * Lines that are already short are kept as-is; longer lines are split
- * at word boundaries where possible (greedy fill, no hyphenation).
- */
-function wordWrap(text: string, maxWidth: number): string[] {
-	if (maxWidth <= 0) return text.split("\n");
-
-	const lines: string[] = [];
-	for (const paragraph of text.split("\n")) {
-		if (paragraph.length <= maxWidth) {
-			lines.push(paragraph);
-			continue;
-		}
-
-		const words = paragraph.split(" ");
-		let currentLine = "";
-
-		for (const word of words) {
-			// If a single word is longer than maxWidth, it stays on its own line.
-			if (currentLine.length === 0) {
-				if (word.length <= maxWidth) {
-					currentLine = word;
-				} else {
-					// Extra-long word — push it whole (no mid-word break).
-					lines.push(word);
-					currentLine = "";
-				}
-				continue;
-			}
-
-			const candidate = currentLine + " " + word;
-			if (candidate.length <= maxWidth) {
-				currentLine = candidate;
-			} else {
-				lines.push(currentLine);
-				// Restart with the new word (handle it being > maxWidth).
-				if (word.length <= maxWidth) {
-					currentLine = word;
-				} else {
-					lines.push(word);
-					currentLine = "";
-				}
-			}
-		}
-
-		if (currentLine.length > 0) lines.push(currentLine);
-	}
-
-	return lines;
+interface SelectableOption {
+	id: string;
+	label: string;
+	description: string;
 }
+
+const OPTIONS: SelectableOption[] = [
+	{ id: "approve", label: "Approve", description: "Allow this tool call" },
+	{ id: "deny", label: "Deny", description: "Block without explanation" },
+	{ id: "reject", label: "Reject with reason", description: "Block and explain why" },
+];
 
 // ── Component ────────────────────────────────────────────────────────────
 
 export class ConfirmWithReasonDialog implements Component {
 	private mode: "options" | "reason" = "options";
+	private optionIndex = 0;
 	private reasonBuffer = "";
 	private cursorPos = 0;
 
@@ -130,22 +93,61 @@ export class ConfirmWithReasonDialog implements Component {
 	// ── Input dispatch ──────────────────────────────────────────────────
 
 	private handleOptionsInput(data: string): void {
-		if (matchesKey(data, "y")) {
-			this.callbacks.onApprove();
-		} else if (matchesKey(data, "n")) {
-			this.callbacks.onDeny();
-		} else if (matchesKey(data, "r")) {
-			this.mode = "reason";
-			this.reasonBuffer = "";
-			this.cursorPos = 0;
+		if (matchesKey(data, Key.up)) {
+			this.optionIndex = Math.max(0, this.optionIndex - 1);
 			this.invalidate();
-		} else if (matchesKey(data, Key.escape)) {
-			this.callbacks.onDeny();
+			return;
 		}
+
+		if (matchesKey(data, Key.down)) {
+			this.optionIndex = Math.min(OPTIONS.length - 1, this.optionIndex + 1);
+			this.invalidate();
+			return;
+		}
+
+		if (matchesKey(data, Key.enter)) {
+			const selected = OPTIONS[this.optionIndex];
+			switch (selected.id) {
+				case "approve":
+					this.callbacks.onApprove();
+					break;
+				case "deny":
+					this.callbacks.onDeny();
+					break;
+				case "reject":
+					this.mode = "reason";
+					this.reasonBuffer = "";
+					this.cursorPos = 0;
+					this.invalidate();
+					break;
+			}
+			return;
+		}
+
+		if (matchesKey(data, Key.escape)) {
+			this.callbacks.onDeny();
+			return;
+		}
+
+		// Ctrl+O: toggle tool output (preview window) expand/collapse
+		if (matchesKey(data, "ctrl+o")) {
+			this.callbacks.onToggleTools?.();
+			this.invalidate();
+			return;
+		}
+
 		// All other input is silently ignored in options mode.
 	}
 
 	private handleReasonInput(data: string): void {
+		// Ctrl+O: toggle tool output (preview window) expand/collapse.
+		// Must be checked before text input, so it works even while typing a reason.
+		if (matchesKey(data, "ctrl+o")) {
+			this.callbacks.onToggleTools?.();
+			this.invalidate();
+			return;
+		}
+
 		if (matchesKey(data, Key.escape)) {
 			// Go back to options mode without confirming.
 			this.mode = "options";
@@ -254,9 +256,6 @@ export class ConfirmWithReasonDialog implements Component {
 		const padX = 2; // left/right padding inside content area
 		const contentWidth = Math.max(20, termWidth - padX * 2);
 
-		// Word-wrap the message.
-		const wrappedMessage = wordWrap(message, contentWidth);
-
 		// Build the lines array.
 		const lines: string[] = [];
 
@@ -270,15 +269,16 @@ export class ConfirmWithReasonDialog implements Component {
 		lines.push(""); // spacer
 
 		// ── Message lines ───────────────────────────────────────────────
+		const wrappedMessage = wrapTextWithAnsi(theme.fg("text", message), contentWidth);
 		for (const msgLine of wrappedMessage) {
-			lines.push(this.padLeft(theme.fg("text", msgLine), padX));
+			lines.push(this.padLeft(msgLine, padX));
 		}
 
 		lines.push(""); // spacer
 
 		// ── Options or reason input ─────────────────────────────────────
 		if (this.mode === "options") {
-			lines.push(...this.buildOptionsLines(padX));
+			lines.push(...this.buildOptionsLines(padX, termWidth));
 		} else {
 			lines.push(...this.buildReasonLines(termWidth, padX));
 		}
@@ -289,20 +289,49 @@ export class ConfirmWithReasonDialog implements Component {
 		return lines;
 	}
 
-	private buildOptionsLines(padX: number): string[] {
+	private buildOptionsLines(padX: number, termWidth: number): string[] {
 		const { theme } = this;
+		const lines: string[] = [];
 
-		const keyY = theme.fg("accent", "y");
-		const keyN = theme.fg("accent", "n");
-		const keyR = theme.fg("accent", "r");
+		const renderWidth = Math.max(1, termWidth - padX * 2);
 
-		const opts: string[] = [
-			`[${keyY}] ${theme.fg("text", "Approve — allow this tool call")}`,
-			`[${keyN}] ${theme.fg("text", "Deny — block without explanation")}`,
-			`[${keyR}] ${theme.fg("text", "Reject with reason — block and explain why")}`,
-		];
+		for (let i = 0; i < OPTIONS.length; i++) {
+			const opt = OPTIONS[i];
+			const selected = i === this.optionIndex;
+			const prefix = selected ? theme.fg("accent", "> ") : "  ";
+			const prefixWidth = visibleWidth(prefix);
 
-		return opts.map((opt) => this.padLeft(opt, padX));
+			// Main label line
+			const label = `${i + 1}. ${opt.label}`;
+			const styledLabel = selected
+				? theme.fg("accent", label)
+				: theme.fg("text", label);
+
+			// Wrap description if it would exceed render width
+			const firstLine = `${prefix}${styledLabel}`;
+			const descPrefix = " ".repeat(prefixWidth);
+			const descPrefixWidth = prefixWidth;
+
+			lines.push(" ".repeat(padX) + firstLine);
+
+			// Description on next line
+			const desc = theme.fg("muted", opt.description);
+			if (descPrefixWidth < renderWidth) {
+				const wrappedDesc = wrapTextWithAnsi(desc, renderWidth - descPrefixWidth);
+				for (const wLine of wrappedDesc) {
+					lines.push(" ".repeat(padX) + descPrefix + wLine);
+				}
+			} else {
+				lines.push(" ".repeat(padX) + descPrefix + desc);
+			}
+		}
+
+		// Help text
+		lines.push("");
+		const help = theme.fg("dim", "↑↓ navigate • Enter select • Esc cancel • Ctrl+O toggle preview");
+		lines.push(" ".repeat(padX) + help);
+
+		return lines;
 	}
 
 	private buildReasonLines(termWidth: number, padX: number): string[] {
@@ -352,7 +381,7 @@ export class ConfirmWithReasonDialog implements Component {
 			reasonLine += theme.inverse(" ");
 		}
 
-		const hintText = "Enter to confirm · Esc to go back";
+		const hintText = "Enter to confirm · Esc to go back · Ctrl+O toggle preview";
 		const hintLine = this.padLeft(theme.fg("dim", hintText), padX);
 
 		return [reasonLine, hintLine];
@@ -391,6 +420,10 @@ export function showConfirmWithReason(
 				onApprove: () => done("approved"),
 				onDeny: () => done("denied"),
 				onRejectWithReason: (reason: string) => done(reason),
+				onToggleTools: () => {
+					const currentlyExpanded = ctx.ui.getToolsExpanded();
+					ctx.ui.setToolsExpanded(!currentlyExpanded);
+				},
 			});
 		},
 	).then((result) => {
