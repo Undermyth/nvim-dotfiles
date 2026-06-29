@@ -1,0 +1,14 @@
+{
+  "model": {
+    "provider": "deepseek",
+    "name": "deepseek-v4-flash"
+  },
+  "thinking": false,
+  "disableTools": true,
+  "systemPrompt": null,
+  "shells": {
+    "linux": "bash",
+    "darwin": "zsh",
+    "win32": "powershell"
+  }
+}

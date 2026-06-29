@@ -127,26 +127,19 @@ function Install-Pi {
   Copy-ConfigFile "$RepoDir\pi\models.json"      "$piDir\models.json"      "pi models"
   Copy-ConfigFile "$RepoDir\pi\APPEND_SYSTEM.md" "$piDir\APPEND_SYSTEM.md" "pi system prompt"
 
-  # websearch
-  Copy-ConfigFile "$RepoDir\pi\extensions\websearch\index.ts"   "$piDir\extensions\websearch\index.ts"   "pi websearch"
-  Copy-ConfigFile "$RepoDir\pi\extensions\websearch\config.json" "$piDir\extensions\websearch\config.json" "pi websearch config"
-  Copy-ConfigFile "$RepoDir\pi\extensions\websearch\utils.ts"   "$piDir\extensions\websearch\utils.ts"   "pi websearch utils"
+  # 自制 extensions（能够整个目录拷贝的，就不逐文件拷贝）
+  Copy-ConfigDir "$RepoDir\pi\extensions\websearch"    "$piDir\extensions\websearch"    "pi websearch"
+  Copy-ConfigDir "$RepoDir\pi\extensions\plan-mode"    "$piDir\extensions\plan-mode"    "pi plan-mode"
+  Copy-ConfigDir "$RepoDir\pi\extensions\token-detail" "$piDir\extensions\token-detail" "pi token-detail"
+  Copy-ConfigDir "$RepoDir\pi\extensions\cmd-helper"   "$piDir\extensions\cmd-helper"   "pi cmd-helper"
 
-  # plan-mode
-  Copy-ConfigFile "$RepoDir\pi\extensions\plan-mode\index.ts"   "$piDir\extensions\plan-mode\index.ts"   "pi plan-mode"
-  Copy-ConfigFile "$RepoDir\pi\extensions\plan-mode\utils.ts"   "$piDir\extensions\plan-mode\utils.ts"   "pi plan-mode utils"
-  Copy-ConfigFile "$RepoDir\pi\extensions\plan-mode\README.md"  "$piDir\extensions\plan-mode\README.md"  "pi plan-mode readme"
-
-  # token-detail
-  Copy-ConfigFile "$RepoDir\pi\extensions\token-detail\index.ts" "$piDir\extensions\token-detail\index.ts" "pi token-detail"
-
-  # questionaire
+  # questionaire 工具（单文件扩展）
   Copy-ConfigFile "$RepoDir\pi\extensions\questionaire.ts" "$piDir\extensions\questionaire.ts" "pi questionaire"
 
-  # subagent
+  # subagent 扩展（子代理系统）
   Copy-ConfigDir "$RepoDir\pi\extensions\subagent" "$piDir\extensions\subagent" "pi subagent"
 
-  # toolgate
+  # toolgate 扩展（权限门控系统）
   Copy-ConfigDir "$RepoDir\pi\extensions\toolgate" "$piDir\extensions\toolgate" "pi toolgate"
 }
 

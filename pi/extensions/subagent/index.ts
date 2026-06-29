@@ -192,13 +192,13 @@ export default function subagentExtension(pi: ExtensionAPI): void {
     ensureDefaultConfig(CONFIG_DIR);
     configs = loadConfigs(CONFIG_DIR);
 
-    if (configs.size === 0) {
-      console.warn("[subagent] No subagent configs loaded");
-    } else {
-      console.log(
-        `[subagent] Loaded ${configs.size} subagent config(s): ${Array.from(configs.keys()).join(", ")}`,
-      );
-    }
+    // if (configs.size === 0) {
+    //   console.warn("[subagent] No subagent configs loaded");
+    // } else {
+    //   console.log(
+    //     `[subagent] Loaded ${configs.size} subagent config(s): ${Array.from(configs.keys()).join(", ")}`,
+    //   );
+    // }
 
     // Clear any stale records from previous sessions
     records.clear();

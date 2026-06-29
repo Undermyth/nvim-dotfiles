@@ -207,16 +207,11 @@ copy_pi_config() {
     copy_config_file "$REPO_DIR/pi/models.json"        "$HOME/.pi/agent/models.json"        "pi models"
     copy_config_file "$REPO_DIR/pi/APPEND_SYSTEM.md"   "$HOME/.pi/agent/APPEND_SYSTEM.md"   "pi system prompt"
 
-    # 自制 extensions
-    copy_config_file "$REPO_DIR/pi/extensions/websearch/index.ts"  "$HOME/.pi/agent/extensions/websearch/index.ts"  "pi websearch"
-    copy_config_file "$REPO_DIR/pi/extensions/websearch/config.json" "$HOME/.pi/agent/extensions/websearch/config.json" "pi websearch config"
-    copy_config_file "$REPO_DIR/pi/extensions/websearch/utils.ts"  "$HOME/.pi/agent/extensions/websearch/utils.ts"  "pi websearch utils"
-
-    copy_config_file "$REPO_DIR/pi/extensions/plan-mode/index.ts"  "$HOME/.pi/agent/extensions/plan-mode/index.ts"  "pi plan-mode"
-    copy_config_file "$REPO_DIR/pi/extensions/plan-mode/utils.ts"  "$HOME/.pi/agent/extensions/plan-mode/utils.ts"  "pi plan-mode utils"
-    copy_config_file "$REPO_DIR/pi/extensions/plan-mode/README.md" "$HOME/.pi/agent/extensions/plan-mode/README.md" "pi plan-mode readme"
-
-    copy_config_file "$REPO_DIR/pi/extensions/token-detail/index.ts" "$HOME/.pi/agent/extensions/token-detail/index.ts" "pi token-detail"
+    # 自制 extensions（能够整个目录拷贝的，就不逐文件拷贝）
+    copy_config_dir "$REPO_DIR/pi/extensions/websearch"    "$HOME/.pi/agent/extensions/websearch"    "pi websearch"
+    copy_config_dir "$REPO_DIR/pi/extensions/plan-mode"    "$HOME/.pi/agent/extensions/plan-mode"    "pi plan-mode"
+    copy_config_dir "$REPO_DIR/pi/extensions/token-detail" "$HOME/.pi/agent/extensions/token-detail" "pi token-detail"
+    copy_config_dir "$REPO_DIR/pi/extensions/cmd-helper"   "$HOME/.pi/agent/extensions/cmd-helper"   "pi cmd-helper"
 
     # questionaire 工具（单文件扩展）
     copy_config_file "$REPO_DIR/pi/extensions/questionaire.ts" "$HOME/.pi/agent/extensions/questionaire.ts" "pi questionaire"
