@@ -399,21 +399,35 @@ export class ConfirmWithReasonDialog implements Component {
 /**
  * Show a three-way confirmation dialog as a non-overlay custom component.
  *
- * Unlike an overlay, this replaces the normal chat view while active,
- * rendering full-width just like ctx.ui.confirm() and the questionnaire
- * tool.  The dialog appears at the bottom of the message area — the
- * same position as the old toolgate's ask prompt.
+ * In TUI mode this renders a full-width interactive dialog with three
+ * options (Approve / Deny / Reject with reason).
+ *
+ * In RPC / ACP mode, custom TUI components are not available — we fall
+ * back to `ctx.ui.confirm()`, which pi-acp translates into an ACP
+ * `requestPermission` call (a simple Yes/No prompt in the editor).
  *
  * Returns a Promise that resolves with:
  * - `{ approved: true }` — user approved
  * - `{ approved: false }` — user denied without a reason
  * - `{ approved: false, reason: "..." }` — user denied and provided a reason
+ *   (only in TUI mode; RPC/ACP mode cannot capture a free-text reason)
  */
 export function showConfirmWithReason(
 	ctx: ExtensionContext,
 	title: string,
 	message: string,
 ): Promise<{ approved: boolean; reason?: string }> {
+	// ── RPC / ACP fallback ──────────────────────────────────────────
+	// In RPC mode (used by pi-acp and other headless clients),
+	// ctx.ui.custom() is a no-op that returns undefined.  We fall back
+	// to ctx.ui.confirm() which pi-acp maps to ACP requestPermission.
+	// The "reject with reason" feature is not available in this mode
+	// (ACP does not support free-text input in permission dialogs).
+	if (ctx.mode !== "tui") {
+		return ctx.ui.confirm(title, message).then((approved) => ({ approved }));
+	}
+
+	// ── TUI path ────────────────────────────────────────────────────
 	return ctx.ui.custom<string>(
 		(tui, theme, _keybindings, done) => {
 			return new ConfirmWithReasonDialog(title, message, theme, {

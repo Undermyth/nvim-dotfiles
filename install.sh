@@ -196,6 +196,38 @@ copy_config_file() {
     echo "     ✓ $name 配置 -> $dst"
 }
 
+symlink_config_dir() {
+    local src="$1" dst="$2" name="$3"
+    if [ -d "$dst" ] || [ -L "$dst" ]; then
+        if [ "$CLEAN" = true ]; then
+            rm -rf "$dst"
+        else
+            echo "    ⚠️  $dst 已存在，备份到 ${dst}.bak"
+            rm -rf "${dst}.bak"
+            mv "$dst" "${dst}.bak"
+        fi
+    fi
+    mkdir -p "$(dirname "$dst")"
+    ln -s "$src" "$dst"
+    echo "     ✓ $name 配置 -> $dst (软链接)"
+}
+
+symlink_config_file() {
+    local src="$1" dst="$2" name="$3"
+    if [ -f "$dst" ] || [ -L "$dst" ]; then
+        if [ "$CLEAN" = true ]; then
+            rm -f "$dst"
+        else
+            echo "    ⚠️  $dst 已存在，备份到 ${dst}.bak"
+            rm -f "${dst}.bak"
+            mv "$dst" "${dst}.bak"
+        fi
+    fi
+    mkdir -p "$(dirname "$dst")"
+    ln -s "$src" "$dst"
+    echo "     ✓ $name 配置 -> $dst (软链接)"
+}
+
 # ============================================================
 #  Agent 配置拷贝函数
 # ============================================================
@@ -207,32 +239,20 @@ copy_pi_config() {
     copy_config_file "$REPO_DIR/pi/models.json"        "$HOME/.pi/agent/models.json"        "pi models"
     copy_config_file "$REPO_DIR/pi/APPEND_SYSTEM.md"   "$HOME/.pi/agent/APPEND_SYSTEM.md"   "pi system prompt"
 
-    # 自制 extensions（能够整个目录拷贝的，就不逐文件拷贝）
-    copy_config_dir "$REPO_DIR/pi/extensions/websearch"    "$HOME/.pi/agent/extensions/websearch"    "pi websearch"
-    copy_config_dir "$REPO_DIR/pi/extensions/plan-mode"    "$HOME/.pi/agent/extensions/plan-mode"    "pi plan-mode"
-    copy_config_dir "$REPO_DIR/pi/extensions/token-detail" "$HOME/.pi/agent/extensions/token-detail" "pi token-detail"
-    copy_config_dir "$REPO_DIR/pi/extensions/cmd-helper"   "$HOME/.pi/agent/extensions/cmd-helper"   "pi cmd-helper"
-
-    # questionaire 工具（单文件扩展）
-    copy_config_file "$REPO_DIR/pi/extensions/questionaire.ts" "$HOME/.pi/agent/extensions/questionaire.ts" "pi questionaire"
-
-    # subagent 扩展（子代理系统）
-    copy_config_dir "$REPO_DIR/pi/extensions/subagent" "$HOME/.pi/agent/extensions/subagent" "pi subagent"
-
-    # toolgate 扩展（权限门控系统）
-    copy_config_dir "$REPO_DIR/pi/extensions/toolgate" "$HOME/.pi/agent/extensions/toolgate" "pi toolgate"
+    # 自制 extensions（整个目录软链接）
+    symlink_config_dir "$REPO_DIR/pi/extensions" "$HOME/.pi/agent/extensions" "pi extensions"
 }
 
 copy_claude_config() {
     echo ""
     echo "  >> Claude Code 配置"
-    copy_config_file "$REPO_DIR/claude/settings.json" "$HOME/.claude/" "claude"
+    symlink_config_file "$REPO_DIR/claude/settings.json" "$HOME/.claude/settings.json" "claude"
 }
 
 copy_reasonix_config() {
     echo ""
     echo "  >> Reasonix 配置"
-    copy_config_file "$REPO_DIR/reasonix/config.toml" "$HOME/.config/reasonix/config.toml" "reasonix"
+    symlink_config_file "$REPO_DIR/reasonix/config.toml" "$HOME/.config/reasonix/config.toml" "reasonix"
 }
 
 # ============================================================
@@ -328,7 +348,7 @@ if [ "$INSTALL_DEPS" = true ]; then
     if agent_enabled "pi"; then
         echo ""
         echo "  >> Pi Coding Agent"
-        curl -fsSL https://pi.dev/install.sh | sh
+	curl -fsSL https://pi.dev/install.sh | sh
     else
         echo ""
         echo "  ⏭️  跳过 Pi Coding Agent (未在 --agents 中指定)"
@@ -395,7 +415,7 @@ if [ "$INSTALL_DEPS" = true ]; then
     # ----- 2.6 拷贝配置文件 -----
     echo ""
     echo "  >> 拷贝配置文件"
-    copy_config_dir "$REPO_DIR/nvim" "$HOME/.config/nvim" "nvim"
+    symlink_config_dir "$REPO_DIR/nvim" "$HOME/.config/nvim" "nvim"
     copy_config_file "$REPO_DIR/zellij/config.kdl" "$HOME/.config/zellij/config.kdl" "zellij"
 
     if agent_enabled "reasonix"; then
@@ -462,7 +482,7 @@ if [ "$INSTALL_DEPS" != true ]; then
         echo "════════════════════════════════════════════════════"
         echo "  📋 复制 nvim/reasonix/zellij 配置"
         echo "════════════════════════════════════════════════════"
-        copy_config_dir "$REPO_DIR/nvim" "$HOME/.config/nvim" "nvim"
+        symlink_config_dir "$REPO_DIR/nvim" "$HOME/.config/nvim" "nvim"
         copy_config_file "$REPO_DIR/zellij/config.kdl" "$HOME/.config/zellij/config.kdl" "zellij"
         if agent_enabled "reasonix"; then
             copy_reasonix_config

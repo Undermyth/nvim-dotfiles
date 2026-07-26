@@ -117,6 +117,62 @@ function Remove-IfExists($Path) {
   }
 }
 
+function Symlink-ConfigDir($Src, $Dst, $Label) {
+  if (Test-Path $Dst) {
+    if ($Clean) {
+      Remove-Item -Recurse -Force $Dst
+      Write-Host "     🧹 已清理 $Dst" -ForegroundColor Yellow
+    }
+    else {
+      $backup = "$Dst.bak"
+      if (Test-Path $backup) { Remove-Item -Recurse -Force $backup }
+      Rename-Item -Path $Dst -NewName "$(Split-Path $Dst -Leaf).bak"
+      Write-Host "     ⚠️  $Dst 已存在，备份到 $backup" -ForegroundColor Yellow
+    }
+  }
+  $dstParent = Split-Path $Dst -Parent
+  if (-not (Test-Path $dstParent)) {
+    New-Item -ItemType Directory -Path $dstParent -Force | Out-Null
+  }
+  try {
+    New-Item -ItemType SymbolicLink -Path $Dst -Target $Src -Force | Out-Null
+    Write-Host "     ✓ $Label -> $Dst (软链接)" -ForegroundColor Green
+  }
+  catch {
+    Write-Host "     ⚠️  无法创建软链接 (需要管理员权限或开发者模式)，回退为复制" -ForegroundColor Yellow
+    Copy-Item -Path $Src -Destination $Dst -Recurse -Force
+    Write-Host "     ✓ $Label -> $Dst (复制)" -ForegroundColor Green
+  }
+}
+
+function Symlink-ConfigFile($Src, $Dst, $Label) {
+  if (Test-Path $Dst) {
+    if ($Clean) {
+      Remove-Item -Force $Dst
+      Write-Host "     🧹 已清理 $Dst" -ForegroundColor Yellow
+    }
+    else {
+      $backup = "$Dst.bak"
+      if (Test-Path $backup) { Remove-Item -Force $backup }
+      Rename-Item -Path $Dst -NewName "$(Split-Path $Dst -Leaf).bak"
+      Write-Host "     ⚠️  $Dst 已存在，备份到 $backup" -ForegroundColor Yellow
+    }
+  }
+  $dstParent = Split-Path $Dst -Parent
+  if (-not (Test-Path $dstParent)) {
+    New-Item -ItemType Directory -Path $dstParent -Force | Out-Null
+  }
+  try {
+    New-Item -ItemType SymbolicLink -Path $Dst -Target $Src -Force | Out-Null
+    Write-Host "     ✓ $Label -> $Dst (软链接)" -ForegroundColor Green
+  }
+  catch {
+    Write-Host "     ⚠️  无法创建软链接 (需要管理员权限或开发者模式)，回退为复制" -ForegroundColor Yellow
+    Copy-Item -Path $Src -Destination $Dst -Force
+    Write-Host "     ✓ $Label -> $Dst (复制)" -ForegroundColor Green
+  }
+}
+
 # ----- 各 agent 安装函数 ----------------------------------------
 function Install-Pi {
   Write-Step "Pi Coding Agent 配置"
@@ -127,32 +183,20 @@ function Install-Pi {
   Copy-ConfigFile "$RepoDir\pi\models.json"      "$piDir\models.json"      "pi models"
   Copy-ConfigFile "$RepoDir\pi\APPEND_SYSTEM.md" "$piDir\APPEND_SYSTEM.md" "pi system prompt"
 
-  # 自制 extensions（能够整个目录拷贝的，就不逐文件拷贝）
-  Copy-ConfigDir "$RepoDir\pi\extensions\websearch"    "$piDir\extensions\websearch"    "pi websearch"
-  Copy-ConfigDir "$RepoDir\pi\extensions\plan-mode"    "$piDir\extensions\plan-mode"    "pi plan-mode"
-  Copy-ConfigDir "$RepoDir\pi\extensions\token-detail" "$piDir\extensions\token-detail" "pi token-detail"
-  Copy-ConfigDir "$RepoDir\pi\extensions\cmd-helper"   "$piDir\extensions\cmd-helper"   "pi cmd-helper"
-
-  # questionaire 工具（单文件扩展）
-  Copy-ConfigFile "$RepoDir\pi\extensions\questionaire.ts" "$piDir\extensions\questionaire.ts" "pi questionaire"
-
-  # subagent 扩展（子代理系统）
-  Copy-ConfigDir "$RepoDir\pi\extensions\subagent" "$piDir\extensions\subagent" "pi subagent"
-
-  # toolgate 扩展（权限门控系统）
-  Copy-ConfigDir "$RepoDir\pi\extensions\toolgate" "$piDir\extensions\toolgate" "pi toolgate"
+  # 自制 extensions（整个目录软链接）
+  Symlink-ConfigDir "$RepoDir\pi\extensions" "$piDir\extensions" "pi extensions"
 }
 
 function Install-Claude {
   Write-Step "Claude Code 配置"
   $claudeDir = "$HomeDir\.claude"
-  Copy-ConfigFile "$RepoDir\claude\settings.json" "$claudeDir\settings.json" "claude"
+  Symlink-ConfigFile "$RepoDir\claude\settings.json" "$claudeDir\settings.json" "claude"
 }
 
 function Install-Reasonix {
   Write-Step "Reasonix 配置"
   $reasonixDir = "$HomeDir\.config\reasonix"
-  Copy-ConfigFile "$RepoDir\reasonix\config.toml" "$reasonixDir\config.toml" "reasonix"
+  Symlink-ConfigFile "$RepoDir\reasonix\config.toml" "$reasonixDir\config.toml" "reasonix"
 }
 
 # ============================================================
