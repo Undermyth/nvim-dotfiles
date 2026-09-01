@@ -1,0 +1,38 @@
+# See the full configuration reference: https://rioterm.com/docs/config
+theme = "night-owl"
+line-height = 1.2
+
+[fonts]
+size = 16
+
+[cursor]
+shape = 'beam'
+blinking = true
+
+
+[effects]
+trail-cursor = true
+trail-cursor-opacity = 0.6
+trail-cursor-decay = [100, 400]
+trail-cursor-start-threshold = 2
+
+[fonts.regular]
+family = "ComicShannsMono Nerd Font"
+style = "default"
+
+[fonts.bold]
+family = "ComicShannsMono Nerd Font"
+style = "default"
+
+[fonts.italic]
+family = "ComicShannsMono Nerd Font"
+style = "default"
+
+[fonts.bold-italic]
+family = "ComicShannsMono Nerd Font"
+style = "default"
+
+# [bindings]
+# keys = [
+#     { key = "p", with = "control", action = "OpenCommandPalette"}
+# ]
