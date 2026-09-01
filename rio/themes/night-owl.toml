@@ -1,0 +1,55 @@
+# ~/.config/rio/themes/night-owl.toml
+
+[colors]
+background = "#011627"
+foreground = "#cccccc"
+
+# Selection
+selection-background = "#093b5e"
+selection-foreground = "#cccccc"
+
+# Navigation
+tabs = "#011627"
+tabs-active = "#cccccc"
+bar = "#011627"
+split = "#093b5e"
+cursor = "#cccccc"
+vi-cursor = "#cccccc"
+
+# Search
+search-match-background = "#c5e478"
+search-match-foreground = "#011627"
+search-focused-match-background = "#82aaff"
+search-focused-match-foreground = "#011627"
+
+# Regular colors
+black = "#011627"
+blue = "#82aaff"
+cyan = "#21c7a8"
+green = "#22da6e"
+magenta = "#c792ea"
+red = "#ef5350"
+white = "#ffffff"
+yellow = "#c5e478"
+
+# Dim colors (using regular colors as no dim values provided)
+dim-black = "#011627"
+dim-blue = "#82aaff"
+dim-cyan = "#21c7a8"
+dim-foreground = "#cccccc"
+dim-green = "#22da6e"
+dim-magenta = "#c792ea"
+dim-red = "#ef5350"
+dim-white = "#ffffff"
+dim-yellow = "#c5e478"
+
+# Light colors (mapped to bright colors)
+light-black = "#575656"
+light-blue = "#82aaff"
+light-cyan = "#7fdbca"
+light-foreground = "#cccccc"
+light-green = "#22da6e"
+light-magenta = "#c792ea"
+light-red = "#ef5350"
+light-white = "#ffffff"
+light-yellow = "#ffeb95"
