@@ -68,8 +68,6 @@ Neovim Configuration for Python
 
 ## Usage
 
-### Interactive Python
-Jupytext 相关的功能由 Quench.nvim 提供；端口号为 18237。需要一个额外的浏览器窗口提供支持。
 
 ### LSP
 使用 `:Mason` 查找并使用 `i` 键安装对应语言的 LSP。然后在 LSP 相关的配置文件中启用即可。

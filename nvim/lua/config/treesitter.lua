@@ -20,12 +20,12 @@
 -- (needs network access and a C compiler).
 local parsers = {
     "lua", "markdown", "markdown_inline", "vimdoc", "query", -- nvim 0.12 ftplugins
-    "python", "rust",                                        -- daily use
+    "python", "rust", "html", "latex", "yaml"                -- daily use
 }
 
 -- Filetypes whose highlighting we start ourselves (everything not covered by
 -- a bundled ftplugin). To add a language: parser above + filetype here.
-local auto_start = { "python", "rust" }
+local auto_start = { "python", "rust", "html", "latex", "yaml" }
 
 require("nvim-treesitter").install(parsers)
 
