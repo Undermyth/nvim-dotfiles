@@ -7,18 +7,18 @@ local action_state = require('telescope.actions.state')
 local actions = require('telescope.actions')
 
 -- 查找文件
-vim.keymap.set("n", "<C-p>", ":Telescope find_files<CR>")
-vim.keymap.set("n", "<leader>f", ":Telescope find_files<CR>")
+vim.keymap.set("n", "<C-p>", "<cmd>Telescope find_files<CR>")
+vim.keymap.set("n", "<leader>f", "<cmd>Telescope find_files<CR>")
 -- 全局搜索
-vim.keymap.set("n", "<leader>/", "<Esc>:Telescope live_grep<CR>")
+vim.keymap.set("n", "<leader>/", "<cmd>Telescope live_grep<CR>")
 -- 符号列表
-vim.keymap.set("n", "<leader>s", ":Telescope aerial<CR>")
+vim.keymap.set("n", "<leader>s", "<cmd>Telescope aerial<CR>")
 -- 文件树
-vim.keymap.set("n", "<leader>e", ":Telescope file_browser<CR>")
+vim.keymap.set("n", "<leader>e", "<cmd>Telescope file_browser<CR>")
 -- 诊断
-vim.keymap.set("n", "<leader>d", ":Telescope diagnostics<CR>")
+vim.keymap.set("n", "<leader>d", "<cmd>Telescope diagnostics<CR>")
 -- git status
-vim.keymap.set("n", "<leader>u", "Telescope git_status<CR>")
+vim.keymap.set("n", "<leader>u", "<cmd>Telescope git_status<CR>")
 
 -- 将 Ctrl-Tab 映射到 Telescope 的 buffer 列表
 -- `sort_mru = true` 是默认值，所以通常不用显式写出

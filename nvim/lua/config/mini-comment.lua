@@ -9,6 +9,6 @@ minicomment.setup({
         comment = '<leader>c',
         comment_line = '<leader>c',
         comment_visual = '<leader>c',
-        text_object = '<leader>c'
+        textobject = '<leader>c'
     }
 })

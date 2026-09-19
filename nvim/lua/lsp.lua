@@ -1,29 +1,40 @@
--- Create keymapping
--- LspAttach: After an LSP Client performs "initialize" and attaches to a buffer.
+-- LSP keymaps.
+--
+-- Registered buffer-locally on `LspAttach`, so `gd` / `gr` / `ge` only exist in
+-- buffers that actually have a language server attached (and never shadow the
+-- native `gi` command). This file is the single place these mappings live; the
+-- previous duplicate global copies in lua/config/preview.lua have been removed.
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
-		local keymap = vim.keymap
-		local lsp = vim.lsp
-		local bufopts = { noremap = true, silent = true }
+		local bufopts = { noremap = true, silent = true, buffer = args.buf }
 
-		keymap.set("n", "gr", lsp.buf.references, bufopts)
-		keymap.set("n", "gd", lsp.buf.definition, bufopts)
-        keymap.set("n", "gi", lsp.buf.implementation, bufopts)
+		vim.keymap.set(
+			"n",
+			"gd",
+			"<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+			bufopts
+		)
+		vim.keymap.set(
+			"n",
+			"gr",
+			"<cmd>lua require('goto-preview').goto_preview_references()<CR>",
+			bufopts
+		)
+		-- `ge`, not `gi`: `gi` is a native command ("insert at last insert
+		-- position"). `ge` was free; note it does shadow the native `ge`
+		-- (previous word end) in these buffers.
+		vim.keymap.set(
+			"n",
+			"ge",
+			"<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
+			bufopts
+		)
 	end,
 })
 
--- 全局诊断 Keymaps (这部分保持不变)
-local opts = { noremap = true, silent = true }
--- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
-vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev({ float = { border = "rounded" } }) end, opts)
-vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next({ float = { border = "rounded" } }) end, opts)
--- vim.keymap.set('n', '<leader>e', vim.diagnostic.setloclist, opts)
-
--- CursorHold: When the user doesn't press a key for the time specified with 'updatetime'
---             By default, `updatetime` is equal to 4000 ms
---
--- vim.api.nvim_create_autocmd("CursorHold", {
--- 	callback = function()
--- 		vim.diagnostic.open_float(nil, { focusable = false, source = "if_many" })
--- 	end,
--- })
+-- NOTE: `[d` / `]d` are intentionally NOT mapped here.
+--   * Neovim 0.12 ships them as built-ins (vim/_core/defaults.lua).
+--   * The old `vim.diagnostic.goto_prev/goto_next` calls are deprecated
+--     (removed in 0.13) and printed a deprecation warning on every use.
+-- The rounded diagnostic float border they used to request is now global,
+-- via `vim.o.winborder = "rounded"` in lua/options.lua.

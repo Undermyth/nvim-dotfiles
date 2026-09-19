@@ -4,10 +4,9 @@ if not status then
 	return
 end
 
-vim.keymap.set('n', 'gd', "<cmd>lua require('goto-preview').goto_preview_definition()<CR>")
-vim.keymap.set('n', 'gt', "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>")
-vim.keymap.set('n', 'gi', "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>")
-vim.keymap.set('n', 'gr', "<cmd>lua require('goto-preview').goto_preview_references()<CR>")
+-- Keymaps live in lua/lsp.lua, registered buffer-locally on `LspAttach`
+-- (gd / gr / ge). Do not add global gd/gr/gi/gt maps here: they would be
+-- global overrides of native keys and would duplicate the LspAttach maps.
 
 preview.setup({
 

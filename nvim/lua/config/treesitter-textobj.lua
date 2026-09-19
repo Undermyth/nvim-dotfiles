@@ -41,5 +41,6 @@ vim.keymap.set({ "n", "x", "o" }, "[F", function() move.goto_previous_end("@func
 vim.keymap.set({ "n", "x", "o" }, "[T", function() move.goto_previous_end("@class.outer", "textobjects") end)
 
 -- go to start or end, whichever is closer
-vim.keymap.set({ "n", "x", "o" }, "]d", function() move.goto_next("@conditional.outer", "textobjects") end)
-vim.keymap.set({ "n", "x", "o" }, "[d", function() move.goto_previous("@conditional.outer", "textobjects") end)
+-- NOTE: `]d` / `[d` are left to Neovim 0.12's built-in diagnostic jumps.
+vim.keymap.set({ "n", "x", "o" }, "]c", function() move.goto_next("@conditional.outer", "textobjects") end)
+vim.keymap.set({ "n", "x", "o" }, "[c", function() move.goto_previous("@conditional.outer", "textobjects") end)

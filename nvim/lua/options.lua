@@ -31,7 +31,8 @@ vim.opt.smartcase = true -- but make it case sensitive if an uppercase is entere
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- vim.o.winborder = "rounded"
+-- global floating-window border (Neovim 0.11+); replaces per-plugin `border`
+vim.o.winborder = "rounded"
 
 vim.g.pyindent_open_paren   = '&shiftwidth'
 vim.g.pyindent_nested_paren = '&shiftwidth'
@@ -83,8 +84,10 @@ vim.api.nvim_create_autocmd({ "CursorMoved" }, {
 vim.api.nvim_create_autocmd({ "CursorHold" }, {
     group = auto_highlight_group,
     callback = function()
-        -- 只在 normal 模式下并且没有选区时执行
-        if vim.fn.mode() == "n" and vim.fn.visualmode() == "" then
+        -- 只在 normal 模式下执行；mode() 本身已排除可视模式。
+        -- 注意：不要用 visualmode() 判断——它返回的是上一次用过的可视模式，
+        -- 一旦用过一次 v/V/<C-v> 就永远非空，会让高亮此后整场 session 失效。
+        if vim.fn.mode() == "n" then
             -- 调用内置的文档高亮功能
             -- 它会自动处理光标下是否有单词等情况
             vim.lsp.buf.document_highlight()

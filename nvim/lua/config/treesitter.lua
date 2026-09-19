@@ -20,14 +20,28 @@
 -- (needs network access and a C compiler).
 local parsers = {
     "lua", "markdown", "markdown_inline", "vimdoc", "query", -- nvim 0.12 ftplugins
-    "python", "rust", "html", "latex", "yaml"                -- daily use
+    "python", "rust", "html", "latex", "yaml"                -- daily use (latex = parser name; its filetypes are tex/latex/plaintex)
 }
 
--- Filetypes whose highlighting we start ourselves (everything not covered by
--- a bundled ftplugin). To add a language: parser above + filetype here.
-local auto_start = { "python", "rust", "html", "latex", "yaml" }
-
 require("nvim-treesitter").install(parsers)
+
+-- Make the `tex` / `plaintex` filetypes resolve to the `latex` parser.
+-- (nvim-treesitter also registers `latex = { 'tex' }` from its bundled
+-- plugin/filetypes.lua; register() is idempotent and also covers plaintex,
+-- which is the filetype Neovim picks for plain-looking .tex files.)
+vim.treesitter.language.register("latex", "tex")
+vim.treesitter.language.register("latex", "plaintex")
+
+-- Filetypes whose highlighting we start ourselves (everything not covered by
+-- a bundled ftplugin). Derived from `parsers` so a parser can never drift from
+-- its filetypes again; `plaintex` is appended explicitly in case a future
+-- parser set stops declaring it (the `.tex` filetype Neovim picks for
+-- plain-looking files). Duplicates are dropped so an ft is never listed twice.
+local auto_start = { "plaintex" }
+for _, parser in ipairs(parsers) do
+    vim.list_extend(auto_start, vim.treesitter.language.get_filetypes(parser))
+end
+auto_start = vim.fn.uniq(vim.fn.sort(auto_start))
 
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("config.treesitter", { clear = true }),
