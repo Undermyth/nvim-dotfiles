@@ -31,7 +31,7 @@ return {
         ['<S-Tab>'] = { 'select_prev', 'fallback' },
         ['<Up>'] = { 'select_prev', 'fallback' },
         ['<Down>'] = { 'select_next', 'fallback' },
-        ['<Enter>'] = { 'select_and_accept', 'fallback' },
+        ['<Enter>'] = { 'accept', 'fallback' },
         ['<C-y>'] = { 'hide', 'fallback' }
     },
 

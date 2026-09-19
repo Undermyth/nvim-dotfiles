@@ -57,10 +57,20 @@ telescope.setup({
               -- Available modes: symbols, lines, both
               show_columns = "both",
         },
-	file_browser = {
-	      hijack_netrw = true
-	}
+        file_browser = {
+              hijack_netrw = true
+        }
     },
+    opts = {
+        defaults = {
+            layout_strategy = "horizontal",
+            sorting_strategy = "ascending",
+            layout_config = { prompt_position = "top" },
+            file_ignore_patterns = { "^.git/", "__pycache__" },
+            vimgrep_arguments = { "rg", "--color=never", "--no-headings", "--with-filename",
+                                "--line-number", "--column", "--smart-case", "--hidden" },
+        }
+    }
 })
 
 telescope.load_extension("aerial")
