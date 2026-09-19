@@ -3,8 +3,11 @@ return {
 	name = "catppuccin", 
 	priority = 1000,
 	opts = {
-		flavour = "latte",
+		flavour = "mocha",
 		transparent_background = true,
+        float = {
+            transparent = true
+        },
 		term_colors = true,
 		styles = {
 			comments = {},

@@ -97,3 +97,13 @@ vim.api.nvim_create_autocmd({ "CursorHold" }, {
         end
     end,
 })
+
+-- 清除边栏背景色
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    -- 将 SignColumn 的背景设为透明 (NONE)
+    vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "CursorLine", { bg = "NONE", underline = true })
+  end,
+})
