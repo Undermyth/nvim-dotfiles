@@ -1,7 +1,7 @@
 -- Install Lazy.nvim automatically if it's not installed(Bootstraping)
 -- Hint: string concatenation is done by `..`
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",

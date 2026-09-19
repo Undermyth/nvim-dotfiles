@@ -1,6 +1,7 @@
 return {
     "kdheepak/lazygit.nvim",
-    lazy = false,
+    -- No `lazy = false` here: it would make the `cmd` / `keys` triggers below
+    -- meaningless and force the plugin to load at startup.
     cmd = {
         "LazyGit",
         "LazyGitConfig",

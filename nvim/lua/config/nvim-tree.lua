@@ -4,7 +4,8 @@ if not status then
 	return
 end
 
-vim.keymap.set('n', '<leader>b', ':NvimTreeToggle<CR>')
+-- `<leader>b` is defined once, in lua/plugins/nvim-tree.lua's `keys` (which also
+-- gives it a `desc` and lazy-loads the plugin). Do not map it here again.
 
 nvim_tree.setup({
     sort_by = "case_sensitive",

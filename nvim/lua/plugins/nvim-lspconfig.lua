@@ -1,29 +1,24 @@
 return {
     "neovim/nvim-lspconfig",
 
-    -- How to add an LSP for a specific programming language?
-    -- 1. Use `:Mason` to install the corresponding LSP.
-    -- 2. Enable it below, and set per-language settings with
-    --    `vim.lsp.config('<name>', { ... })` (the new config API).
-    -- Hint (find <name> here): https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
-    config = function ()
-	vim.lsp.enable({ 'rust_analyzer', 'ty' })
-
-        -- NOTE: floating-window borders are handled globally by
-        -- `vim.o.winborder = "rounded"` in lua/options.lua, so no per-plugin
-        -- `ui` / `diagnostics` setup options are needed here.
-        --
-        -- Case 1. For CMake Users
-        --     $ cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .
-        -- Case 2. For Bazel Users, use https://github.com/hedronvision/bazel-compile-commands-extractor
-        -- Case 3. If you don't use any build tool and all files in a project use the same build flags
-        --     Place your compiler flags in the compile_flags.txt file, located in the root directory
-        --     of your project. Each line in the file should contain a single compiler flag.
-        -- src: https://clangd.llvm.org/installation#compile_commandsjson
-        --
-        -- Examples (language server name -> settings):
-        --   vim.lsp.config('tinymist', { settings = { formatterMode = "typstyle" } })
-        --   vim.lsp.config('ty', {})
-        --   vim.lsp.config('ruff', {})
-        end
+    -- Adding an LSP for a language (v2 API):
+    -- 1. Use `:Mason` to install the server and add its name to
+    --    `ensure_installed` in lua/plugins/mason-lspconfig.nvim.lua.
+    -- 2. Add its name to the `vim.lsp.enable` list below. That list is the
+    --    single source of truth: mason-lspconfig runs with
+    --    `automatic_enable = false`, so a newly installed server is NOT
+    --    enabled silently.
+    -- 3. Per-server settings go through `vim.lsp.config('<name>', { ... })`;
+    --    defaults live in nvim-lspconfig's `lsp/<name>.lua` (e.g. lsp/ty.lua).
+    --
+    -- NOTE: do NOT turn this into `opts = { ... }`. lazy.nvim would then call
+    -- `require("lspconfig").setup()`, which is the deprecated v1 framework
+    -- (nvim-lspconfig itself is fine; only that framework is deprecated).
+    -- Likewise `lspconfig.<name>.setup({})` is a v1-only spelling.
+    --
+    -- Floating-window borders are handled globally by
+    -- `vim.o.winborder = "rounded"` in lua/options.lua.
+    config = function()
+        vim.lsp.enable({ "rust_analyzer", "ty" })
+    end,
 }

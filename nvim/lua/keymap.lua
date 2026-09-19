@@ -1,9 +1,3 @@
-local opts = {
-    silent = true,
-    noremap = true
-}
-
-
 -- 设置键盘映射
 vim.keymap.set('i', '<S-Left>', "<C-o>b")
 vim.keymap.set('i', '<S-Right>', "<C-o>w")

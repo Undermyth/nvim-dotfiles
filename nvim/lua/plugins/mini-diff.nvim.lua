@@ -1,10 +1,12 @@
 return {
     "echasnovski/mini.diff",
-    config = function()
-        local diff = require("mini.diff")
-        diff.setup({
+    -- `opts` as a function so that `require("mini.diff")` runs after the plugin
+    -- has been added to the runtimepath (a plain table would be evaluated while
+    -- the spec is parsed, i.e. during startup).
+    opts = function()
+        return {
             -- Disabled by default
-            source = diff.gen_source.none(),
-        })
+            source = require("mini.diff").gen_source.none(),
+        }
     end,
 }

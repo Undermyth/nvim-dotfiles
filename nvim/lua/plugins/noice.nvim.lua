@@ -11,11 +11,14 @@ return {
     },
     opts = {
         lsp = {
-            -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+            -- Render LSP markdown (built-in `K` hover / `<C-S>` signature help)
+            -- with Treesitter.
+            -- NOTE: the `cmp.entry.get_documentation` override is intentionally
+            -- absent: it is an nvim-cmp-only hack and this config uses blink.cmp
+            -- (noice has no blink.cmp integration, so nothing replaces it).
             override = {
                 ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
                 ["vim.lsp.util.stylize_markdown"] = true,
-                ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
             },
         },
         -- you can enable a preset for easier configuration
