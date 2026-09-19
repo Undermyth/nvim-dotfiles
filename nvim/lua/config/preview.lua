@@ -5,9 +5,11 @@ if not status then
 end
 
 -- Keymaps live in lua/lsp.lua, registered buffer-locally on `LspAttach`
--- (gd / gr / ge). Do not add global gd/gr/gi/gt maps here: they would be
--- global overrides of native keys and would duplicate the LspAttach maps.
+-- (gpd / gpr / gpi / gpt / gpD / gP for the floating previews; gd / gr / ge
+-- are telescope pickers and no longer use goto-preview).
+-- Do not enable `default_mappings` here: goto-preview installs those as
+-- *global* maps, which would shadow gpd/gpr/... in every buffer, LSP or not.
 
 preview.setup({
-
+	default_mappings = false,
 })
