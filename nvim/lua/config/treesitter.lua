@@ -14,30 +14,24 @@
 -- BF_READERR; every later ":w" then fails with
 -- "E13: File exists (add ! to override)" when the file was opened from a Lua
 -- callback context (e.g. telescope). Always guard calls with pcall().
+--
+-- NOTE: LaTeX (.tex/.plaintex) is intentionally NOT here — VimTeX owns those
+-- filetypes and asks that treesitter highlight be disabled for them.
 
 -- Parsers (+ their queries) to keep installed. install() is async and only
 -- fetches what is missing, so a fresh machine self-heals on first start
 -- (needs network access and a C compiler).
 local parsers = {
     "lua", "markdown", "markdown_inline", "vimdoc", "query", -- nvim 0.12 ftplugins
-    "python", "rust", "html", "latex", "yaml"                -- daily use (latex = parser name; its filetypes are tex/latex/plaintex)
+    "python", "rust", "html", "yaml"                         -- daily use
 }
 
 require("nvim-treesitter").install(parsers)
 
--- Make the `tex` / `plaintex` filetypes resolve to the `latex` parser.
--- (nvim-treesitter also registers `latex = { 'tex' }` from its bundled
--- plugin/filetypes.lua; register() is idempotent and also covers plaintex,
--- which is the filetype Neovim picks for plain-looking .tex files.)
-vim.treesitter.language.register("latex", "tex")
-vim.treesitter.language.register("latex", "plaintex")
-
 -- Filetypes whose highlighting we start ourselves (everything not covered by
 -- a bundled ftplugin). Derived from `parsers` so a parser can never drift from
--- its filetypes again; `plaintex` is appended explicitly in case a future
--- parser set stops declaring it (the `.tex` filetype Neovim picks for
--- plain-looking files). Duplicates are dropped so an ft is never listed twice.
-local auto_start = { "plaintex" }
+-- its filetypes again. Duplicates are dropped so an ft is never listed twice.
+local auto_start = {}
 for _, parser in ipairs(parsers) do
     vim.list_extend(auto_start, vim.treesitter.language.get_filetypes(parser))
 end

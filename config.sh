@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ln -s nvim ~/.config/nvim
+ln -s "$PWD/nvim" ~/.config/nvim
 mkdir -p ~/.config/zellij/
 mkdir -p ~/.config/zellij/layouts
 cp zellij/config.kdl ~/.config/zellij
