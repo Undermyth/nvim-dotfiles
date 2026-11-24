@@ -2,6 +2,15 @@ keybinds clear-defaults=true {
     locked {
         bind "Ctrl g" { SwitchToMode "normal"; }
     }
+    shared_except "locked" {
+    	bind "Ctrl y" {
+            LaunchOrFocusPlugin "https://github.com/rvcas/room/releases/download/v1.2.1/room.wasm" {
+            	floating true
+            	ignore_case true
+            	quick_jump true
+            }
+    	}
+    }
     pane {
         bind "left" { MoveFocus "left"; }
         bind "down" { MoveFocus "down"; }
